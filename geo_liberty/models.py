@@ -30,7 +30,7 @@ class Linha(models.Model):
         
 class Ponto(models.Model):
     
-    ponto = models.PointField('Ponto')
+    ponto = models.MultiPointField('Ponto')
     
     class Meta:
         abstract = True
@@ -130,7 +130,6 @@ class RegiaoGeoPolitica(models.Model):
 
 class Pessoa(models.Model):
     
-    municipio = models.ForeignKey(Municipio,verbose_name='Município')
     denominacao = models.CharField('Denominação',max_length=64)
     
     class Meta:
@@ -140,13 +139,13 @@ class Pessoa(models.Model):
 class PessoaFisica(Pessoa):
     
     OPCOES_SEXO = (
-        ('M', 'Masculino'),
-        ('F', 'Feminino'),
+        ('Masculino', 'Masculino'),
+        ('Feminino', 'Feminino'),
     )
     
     cpf = models.CharField('CPF',max_length=32)
     dataNascimento = models.DateField('Data de Nascimento')
-    sexo = models.CharField('Sexo',max_length=1,choices=OPCOES_SEXO)
+    sexo = models.CharField('Sexo',max_length=9,choices=OPCOES_SEXO)
     
     class Meta:
         abstract = True
