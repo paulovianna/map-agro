@@ -30,7 +30,10 @@ class Propriedade(Ponto):
     
     class Meta:
         abstract = True 
-        
+    
+    def __unicode__(self):
+        return self.denominacao
+      
           
 #Beneficiário
         
@@ -38,14 +41,13 @@ class Beneficiario(Proprietario):
     
     CLASSIFICACAO = (
         ('Quilombola', 'Quilombola'),
-        ('Quilombola', 'Quilombola'),
         ('Extrativista', 'Extrativista'),
         ('Ribeirinho', 'Ribeirinho'),
         ('Assentado', 'Assentado'),
     )
     
     dap = models.CharField('Nº DAP',max_length=2)
-    situacao = models.CharField('Situação',max_length=2,choices=CLASSIFICACAO)
+    situacao = models.CharField('Situação',max_length=16,choices=CLASSIFICACAO)
     classificacao = models.CharField('Classificação',max_length=16)
 
     class Meta:
@@ -62,7 +64,7 @@ class Familia(PessoaFisica):
     class Meta:
         verbose_name = 'Família'
         verbose_name_plural = 'Famílias'
-
+        
 
 #Informações Gerais Unidade de Produção
 
@@ -80,6 +82,9 @@ class DestinoLixo(models.Model):
         verbose_name = 'Destino do Lixo'
         verbose_name_plural = 'Destinos do Lixo'
         
+    def __unicode__(self):
+        return self.destino
+        
 
 class Agrotoxico(models.Model):
     
@@ -89,6 +94,9 @@ class Agrotoxico(models.Model):
         verbose_name = 'Agrotóxico'
         verbose_name_plural = 'Agrotóxicos'
         
+    def __unicode__(self):
+        return self.agrotoxico
+        
         
 class DestinoEmbalagemAgrotoxico(models.Model):
     
@@ -97,6 +105,9 @@ class DestinoEmbalagemAgrotoxico(models.Model):
     class Meta:
         verbose_name = 'Destino de Embalagem de Agrotóxico'
         verbose_name_plural = 'Destinos de Embalagem de Agrotóxico'
+        
+    def __unicode__(self):
+        return self.destino
     
  
 class PreparoSolo(models.Model):
@@ -106,7 +117,11 @@ class PreparoSolo(models.Model):
     class Meta:
         verbose_name = 'Preparo do Solo'
         verbose_name_plural = 'Preparos do Solo'
-        
+     
+    def __unicode__(self):
+        return self.preparoSolo
+    
+       
 class InsumosOrganicos(models.Model):
     
     insumoOrganico = models.CharField('Insumo Orgânico',max_length=16)
@@ -114,6 +129,9 @@ class InsumosOrganicos(models.Model):
     class Meta:
         verbose_name = 'Insumo Orgânico'
         verbose_name_plural = 'Insumos Orgânicos'
+        
+    def __unicode__(self):
+        return self.insumoOrganico
 
 
 class UtilizacaoArvores(models.Model):
@@ -124,6 +142,10 @@ class UtilizacaoArvores(models.Model):
         verbose_name = 'Utilização de Árvore'
         verbose_name_plural = 'Utilizações de Árvore'
         
+    def __unicode__(self):
+        return self.utilizacaoArvore
+    
+        
 class PraticaConservacaoSolo(models.Model):
     
     conservacaoSolo = models.CharField('Prática de Conservação do Solo',max_length=16)
@@ -131,6 +153,9 @@ class PraticaConservacaoSolo(models.Model):
     class Meta:
         verbose_name = 'Prática de Conservação do Solo'
         verbose_name_plural = 'Práticas de Conservação do Solo'
+        
+    def __unicode__(self):
+        return self.conservacaoSolo
         
 
 #Unidade de Produção
@@ -163,7 +188,7 @@ class UnidadeProducao(Propriedade):
     class Meta:
         verbose_name = 'Unidade de Produção Familiar'
         verbose_name_plural = 'Unidades de Produção Familiar'
-        
+    
 
 class Confrontacao(models.Model):
     
@@ -177,6 +202,10 @@ class Confrontacao(models.Model):
     class Meta:
         verbose_name = 'Confrontação'
         verbose_name_plural = 'Confrontações'
+        
+    def __unicode__(self):
+        return self.unidadeProducao
+    
     
 class Terra(models.Model):
     
@@ -186,6 +215,9 @@ class Terra(models.Model):
     class Meta:
         verbose_name = 'Terra'
         verbose_name_plural = 'Terras'
+        
+    def __unicode__(self):
+        return self.usoAtual
         
         
 class Terra_UnidadeProducao(models.Model):
@@ -216,6 +248,9 @@ class Benfeitoria(models.Model):
     class Meta:
         verbose_name = 'Benfeitoria'
         verbose_name_plural = 'Benfeitorias'
+        
+    def __unicode__(self):
+        return self.benfeitoria
 
 
 class Benfeitoria_UnidadeProducao(models.Model):
@@ -239,6 +274,9 @@ class EquipamentoTrabalho(models.Model):
     class Meta:
         verbose_name = 'Equipamento de Trabalho'
         verbose_name_plural = 'Equipamentos de Trabalho'
+        
+    def __unicode__(self):
+        return self.equipamentoTrabalho
 
 
 class EquipamentoTrabalho_UnidadeProducao(models.Model):
@@ -288,10 +326,13 @@ class TipoProdutoAnimal(models.Model):
     )
     
     produto = models.CharField('Produto',max_length=16)
-    unidadeMedida = models.CharField('Unidade de Medida',max_length=2,choices=UNIDADE)
+    unidadeMedida = models.CharField('Unidade de Medida',max_length=16,choices=UNIDADE)
     
     class Meta:
         abstract = True
+        
+    def __unicode__(self):
+        return self.produto
         
 
 class ProdutoAnimal(models.Model):
@@ -312,6 +353,9 @@ class TipoBovino(models.Model):
     class Meta:
         verbose_name = 'Tipo de Bovino'
         verbose_name_plural = 'Tipos de Bovinos'
+    
+    def __unicode__(self):
+        return self.tipo
         
         
 class Bovino(AnimalTerrestre):
@@ -350,6 +394,9 @@ class TipoSuino(models.Model):
         verbose_name = 'Tipo de Suíno'
         verbose_name_plural = 'Tipos de Suínos'
         
+    def __unicode__(self):
+        return self.tipo
+        
         
 class Suino(AnimalTerrestre):
     
@@ -387,6 +434,9 @@ class TipoOvinoCaprino(models.Model):
         verbose_name = 'Tipo de Ovino/Caprino'
         verbose_name_plural = 'Tipos de Ovinos/Caprinos'
         
+    def __unicode__(self):
+        return self.tipo
+        
         
 class OvinoCaprino(AnimalTerrestre):
     
@@ -423,6 +473,9 @@ class TipoAve(models.Model):
     class Meta:
         verbose_name = 'Tipo de Ave'
         verbose_name_plural = 'Tipos de Aves'
+        
+    def __unicode__(self):
+        return self.tipo
         
         
 class Ave(AnimalTerrestre):
@@ -549,7 +602,10 @@ class TipoCultura(models.Model):
     
     class Meta:
         verbose_name = 'Tipo de Cultura'
-        verbose_name_plural = 'Tipos de Cultura'        
+        verbose_name_plural = 'Tipos de Cultura'   
+        
+    def __unicode__(self):
+        return self.tipo     
         
         
 class Cultura(models.Model):   
@@ -593,6 +649,9 @@ class RendaForaPropriedade(models.Model):
         verbose_name = 'Renda de Fora da Propriedade'
         verbose_name_plural = 'Rendas de Fora da Propriedade'
         
+    def __unicode__(self):
+        return self.nome
+        
         
 #Rendas da Familia de Fora da Agricultura
 
@@ -607,6 +666,9 @@ class RendaForaAgricultura(models.Model):
         verbose_name = 'Renda de Fora da Agricultura'
         verbose_name_plural = 'Rendas de Fora da Agricultura'
         
+    def __unicode__(self):
+        return self.familia
+        
         
 #Comercialização
 
@@ -617,6 +679,9 @@ class TipoComercializacao(models.Model):
     class Meta:
         verbose_name = 'Forma de Comercialização'
         verbose_name_plural = 'Forma de Comercialização'
+        
+    def __unicode__(self):
+        return self.forma
     
 
 class Comercializacao(models.Model):
@@ -641,6 +706,9 @@ class PoliticaPublica(models.Model):
     class Meta:
         verbose_name = 'Política Pública'
         verbose_name_plural = 'Políticas Públicas'
+        
+    def __unicode__(self):
+        return self.politicaPublica
     
     
 class PoliticaPublica_UnidadeProducao(models.Model):
@@ -676,6 +744,9 @@ class OrganizacaoSocial(models.Model):
     class Meta:
         verbose_name = 'Organização Social'
         verbose_name_plural = 'Organizações Sociais'
+        
+    def __unicode__(self):
+        return self.entidade
         
 
 class OrganizacaoSocial_UnidadeProducao(models.Model):

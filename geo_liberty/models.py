@@ -150,6 +150,9 @@ class PessoaFisica(Pessoa):
     class Meta:
         abstract = True
         
+    def __unicode__(self):
+        return self.denominacao
+        
     def idade(self):  
         pass
     
