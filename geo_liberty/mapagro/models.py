@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.gis.db import models
-from smart_selects.db_fields import *
+#from smart_selects.db_fields import *
 from geo_liberty.models import PessoaFisica,Ponto,Municipio
 
 #Classes Abstratas

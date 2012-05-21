@@ -211,7 +211,7 @@ class AdminUnidadeProducao(AdminGeo):
                         'preparoSolo','praticaConservacaoSolo','insumosOrganicos','utilizacaoArvores',)
     fieldsets = (
             (None, {
-                'fields': ('municipio',('denominacao','beneficiario'),('localizacao','area'),
+                'fields': ('municipio','ponto',('denominacao','beneficiario'),('localizacao','area'),
                            ('tituloDominio','participacao'),('registro','dataRegistro'),'receitaFederal')
             }),
             ('Avançado', {

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
+from django.core.context_processors import csrf
 from django.contrib.gis.gdal import SpatialReference,CoordTransform
 from django.contrib.gis import gdal
 from django.template import RequestContext
@@ -7,6 +8,8 @@ from forms import UploadForm
 
     
 def upload(request):
+    ctoken = {}
+    ctoken.update(csrf(request))
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -23,7 +26,7 @@ def upload(request):
             form = UploadForm()
             return render_to_response('googlev3_upload.html', 
                                       RequestContext(request,{'form': form,
-                                                              'dados': dados}))
+                                                              'dados': dados, 'token':ctoken}))
     else:
         form = UploadForm()
     return render_to_response('googlev3_upload.html', 
