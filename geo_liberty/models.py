@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.gis.db import models
 
-
 # Classes Objetos Geograficos
 
 class Mpoly(models.Model):
@@ -162,4 +161,4 @@ class PessoaJuridica(Pessoa):
     cnpj = models.CharField('CNPJ',max_length=32)
     
     class Meta:
-        abstract = True 
+        abstract = True
