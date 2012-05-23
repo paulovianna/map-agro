@@ -3,7 +3,7 @@
 ## Core for Geographic Data ##
 
 Geo Liberty intends to be an extensible core for geographic applications using Django and GeoDjango.
-We're developing it as doing our course conclusion work.
+We're developing it as our course conclusion work.
 
 ### Designed to fit Brazilian territorial division. ###
 1. 	Countries
