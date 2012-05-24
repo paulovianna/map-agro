@@ -1,2 +1,4 @@
 *.pyc
 *~
+geo_liberty/settings.py
+git-notify
