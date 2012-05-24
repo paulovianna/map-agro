@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.gis.db import models
-#from smart_selects.db_fields import *
-from geo_liberty.models import PessoaFisica,Ponto,Municipio
+from geo_liberty.smart_selects.db_fields import ChainedForeignKey 
+from geo_liberty.models import PessoaFisica,Ponto,Municipio,MicroRegiao,MesoRegiao,Uf
 
 #Classes Abstratas
 
@@ -11,8 +11,10 @@ class Proprietario(PessoaFisica):
         ('Casado', 'Casado'),
         ('Solteiro', 'Solteiro'),
     )
-    
-    municipio = models.ForeignKey(Municipio,verbose_name='Município')
+    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
+    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
+    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
+    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
     rg = models.CharField('RG',max_length=16)
     telefone = models.CharField('Telefone',max_length=16)
     endereco = models.CharField('Endereço',max_length=32)
@@ -24,7 +26,10 @@ class Proprietario(PessoaFisica):
     
 class Propriedade(Ponto):
     
-    municipio = models.ForeignKey(Municipio,verbose_name='Município')
+    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
+    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
+    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
+    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
     denominacao = models.CharField('Denominação',max_length=32)
     localizacao = models.CharField('Localização',max_length=32)
     area = models.FloatField('Área')
@@ -169,7 +174,7 @@ class UnidadeProducao(Propriedade):
         ('Ruim', 'Ruim'),
     )
     
-    beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
+    beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
     participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2)
     tituloDominio = models.CharField('Título de Domínio',max_length=16)
     dataRegistro = models.DateField('Data de Registro')
@@ -189,6 +194,7 @@ class UnidadeProducao(Propriedade):
     class Meta:
         verbose_name = 'Unidade de Produção Familiar'
         verbose_name_plural = 'Unidades de Produção Familiar'
+    
     
 
 class Confrontacao(models.Model):
@@ -294,7 +300,7 @@ class EquipamentoTrabalho_UnidadeProducao(models.Model):
         verbose_name_plural = 'Equipamentos de Trabalho de Unidade de Produção'
 
 
-#Classes Abstratas para Bovinos,Suinos,Caprinos,Aves
+#Classes Abstratas para Agropecuária,Bovinos,Suinos,Caprinos,Aves
 
 class AnimalTerrestre(models.Model):
     
@@ -334,12 +340,31 @@ class TipoProdutoAnimal(models.Model):
         
     def __unicode__(self):
         return self.produto
+    
+class ProdutoUnidadeProducao(models.Model):
+    
+    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
+    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
+    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
+    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
+    unidadeProducao = ChainedForeignKey(UnidadeProducao, chained_field="beneficiario",chained_model_field="beneficiario",verbose_name='Unidade de Produção')
+    
+    class Meta:
+        abstract = True
         
+    def __unicode__(self):
+        return self.beneficiario.denominacao + ' - ' + self.unidadeProducao.denominacao
+         
 
-class ProdutoAnimal(models.Model):
+class Produto(models.Model):
+    
+    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
+
+
+class ProdutoAnimal(Produto):
     
     quantidade = models.IntegerField('Quantidade')
-    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
             
     class Meta:
         abstract = True
@@ -368,21 +393,28 @@ class Bovino(AnimalTerrestre):
         verbose_name_plural = 'Bovinos'
         
         
-class TipoProdutoBovino(TipoProdutoAnimal):
+class TipoProdutoBovinocultura(TipoProdutoAnimal):
     
     class Meta:
-        verbose_name = 'Tipo Produto Bovino'
-        verbose_name_plural = 'Tipos Produto Bovino'
+        verbose_name = 'Tipo Produto Bovinocultura'
+        verbose_name_plural = 'Tipos Produto Bovinocultura'
+        
+        
+class Bovinocultura(ProdutoUnidadeProducao):
+    
+    class Meta:
+        verbose_name = 'Bovinocultura'
+        verbose_name_plural = 'Bovinocultura'
         
 
-class ProdutoBovino(ProdutoAnimal):
+class ProdutoBovinocultura(ProdutoAnimal):
     
-    bovino = models.ForeignKey(Bovino,verbose_name='Bovino')
-    tipoProdutoBovino = models.ForeignKey(TipoProdutoBovino,verbose_name='Tipo Produto')     
+    bovinocultura = models.ForeignKey(Bovinocultura,verbose_name='Bovinocultura')
+    tipoProdutoBovino = models.ForeignKey(TipoProdutoBovinocultura,verbose_name='Tipo Produto')     
 
     class Meta:
-        verbose_name = 'Produto Bovino'
-        verbose_name_plural = 'Produtos Bovinos'
+        verbose_name = 'Produto Bovinocultura'
+        verbose_name_plural = 'Produtos Bovinocultura'
         
         
 #Suínos
@@ -408,21 +440,28 @@ class Suino(AnimalTerrestre):
         verbose_name_plural = 'Suínos'  
         
 
-class TipoProdutoSuino(TipoProdutoAnimal):
+class TipoProdutoSuinocultura(TipoProdutoAnimal):
     
     class Meta:
-        verbose_name = 'Tipo Produto Suíno'
-        verbose_name_plural = 'Tipos Produto Suíno'
+        verbose_name = 'Tipo Produto Suinocultura'
+        verbose_name_plural = 'Tipos Produto Suinocultura'
         
 
-class ProdutoSuino(ProdutoAnimal):
+class Suinocultura(ProdutoUnidadeProducao):
     
-    suino = models.ForeignKey(Suino,verbose_name='Suíno')
-    tipoProdutoSuino = models.ForeignKey(TipoProdutoSuino,verbose_name='Tipo Produto')     
+    class Meta:
+        verbose_name = 'Suinocultura'
+        verbose_name_plural = 'Suinocultura'
+        
+
+class ProdutoSuinocultura(ProdutoAnimal):
+    
+    suinocultura = models.ForeignKey(Suinocultura,verbose_name='Suinocultura')
+    tipoProdutoSuino = models.ForeignKey(TipoProdutoSuinocultura,verbose_name='Tipo Produto')     
 
     class Meta:
-        verbose_name = 'Produto Suíno'
-        verbose_name_plural = 'Produtos Suínos'
+        verbose_name = 'Produto Suinocultura'
+        verbose_name_plural = 'Produtos Suinocultura'
         
         
 #Ovinos e Caprinos
@@ -448,21 +487,28 @@ class OvinoCaprino(AnimalTerrestre):
         verbose_name_plural = 'Ovinos/Caprinos'
         
         
-class TipoProdutoOvinoCaprino(TipoProdutoAnimal):
+class TipoProdutoOvinocaprinocultura(TipoProdutoAnimal):
     
     class Meta:
-        verbose_name = 'Tipo Produto Ovino/Caprino'
-        verbose_name_plural = 'Tipos Produto Ovino/Caprino'
+        verbose_name = 'Tipo Produto Ovinocaprinocultura'
+        verbose_name_plural = 'Tipos Produto Ovinocaprinocultura'
         
 
-class ProdutoOvinoCaprino(ProdutoAnimal):
+class Ovinocaprinocultura(ProdutoUnidadeProducao):
     
-    ovinoCaprino = models.ForeignKey(OvinoCaprino,verbose_name='Ovino/Caprino')
-    tipoProdutoOvinoCaprino = models.ForeignKey(TipoProdutoOvinoCaprino,verbose_name='Tipo Produto')     
+    class Meta:
+        verbose_name = 'Ovinocaprinocultura'
+        verbose_name_plural = 'Ovinocaprinocultura'
+        
+
+class ProdutoOvinocaprinocultura(ProdutoAnimal):
+    
+    ovinoaprinocultura = models.ForeignKey(Ovinocaprinocultura,verbose_name='Ovinocaprinocultura')
+    tipoProdutoOvinoCaprino = models.ForeignKey(TipoProdutoOvinocaprinocultura,verbose_name='Tipo Produto')     
 
     class Meta:
-        verbose_name = 'Produto Ovino/Caprino'
-        verbose_name_plural = 'Produtos Ovino/Caprinos'
+        verbose_name = 'Produto Ovinocabrinocultura'
+        verbose_name_plural = 'Produtos Ovinocabrinocultura'
         
         
 #Aves
@@ -488,26 +534,33 @@ class Ave(AnimalTerrestre):
         verbose_name_plural = 'Aves'
         
 
-class TipoProdutoAve(TipoProdutoAnimal):
+class TipoProdutoAvicultura(TipoProdutoAnimal):
     
     class Meta:
         verbose_name = 'Tipo Produto Ave'
         verbose_name_plural = 'Tipos Produto Ave'
         
 
-class ProdutoAve(ProdutoAnimal):
+class Avicultura(ProdutoUnidadeProducao):
     
-    ave = models.ForeignKey(Ave,verbose_name='Ave')
-    tipoProdutoAve = models.ForeignKey(TipoProdutoAve,verbose_name='Tipo Produto')     
+    class Meta:
+        verbose_name = 'Avicultura'
+        verbose_name_plural = 'Avicultura'
+        
+
+class ProdutoAvicultura(ProdutoAnimal):
+    
+    avicultura = models.ForeignKey(Avicultura,verbose_name='Avicultura')
+    tipoProdutoAve = models.ForeignKey(TipoProdutoAvicultura,verbose_name='Tipo Produto')     
 
     class Meta:
-        verbose_name = 'Produto Ave'
-        verbose_name_plural = 'Produtos Aves'
+        verbose_name = 'Produto Avicultura'
+        verbose_name_plural = 'Produtos Avicultura'
 
 
 #Apicultura
 
-class Apicultura(models.Model):
+class Abelha(models.Model):
     
     unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção')
     tipo = models.CharField('Tipo',max_length=16)
@@ -529,6 +582,13 @@ class TipoProdutoApicultura(TipoProdutoAnimal):
         verbose_name_plural = 'Tipos Produto Apicultura'
         
 
+class Apicultura(ProdutoUnidadeProducao):
+    
+    class Meta:
+        verbose_name = 'Apicultura'
+        verbose_name_plural = 'Apicultura'
+        
+
 class ProdutoApicultura(ProdutoAnimal):
     
     apicultura = models.ForeignKey(Apicultura,verbose_name='Apicultura')
@@ -541,22 +601,22 @@ class ProdutoApicultura(ProdutoAnimal):
 
 #Outros - ????
 
-class Outros(models.Model):
+#class Outros(models.Model):
     
-    unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção')
-    unidade = models.CharField('Unidade',max_length=16)
-    especie = models.CharField('Espécie',max_length=16)
-    quantidade = models.DecimalField('Quantidade(ha)',max_digits=8,decimal_places=2)
-    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    localizacao = models.CharField('Localização',max_length=32)
+#    unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção')
+#    unidade = models.CharField('Unidade',max_length=16)
+#    especie = models.CharField('Espécie',max_length=16)
+#    quantidade = models.DecimalField('Quantidade(ha)',max_digits=8,decimal_places=2)
+#    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
+#    localizacao = models.CharField('Localização',max_length=32)
     
-    class Meta:
-        verbose_name = 'Outra Cultura Animal'
-        verbose_name_plural = 'Outras Culturas Animais'
+#    class Meta:
+#        verbose_name = 'Outra Cultura Animal'
+#        verbose_name_plural = 'Outras Culturas Animais'
 
 #Psicultura
 
-class Psicultura(Outros):
+class Peixe(models.Model):
     
     SISTEMA_PRODUCAO = (
         ('Intensivo', 'Intensivo'),
@@ -564,31 +624,44 @@ class Psicultura(Outros):
         ('Extensivo', 'Extensivo'),
     )
     
+    unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção')
+    unidade = models.CharField('Unidade',max_length=16)
+    especie = models.CharField('Espécie',max_length=16)
+    quantidade = models.DecimalField('Quantidade(ha)',max_digits=8,decimal_places=2)
+    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
+    localizacao = models.CharField('Localização',max_length=32)
     sistemaProducao = models.CharField('Sistema de Produção',max_length=16,choices=SISTEMA_PRODUCAO)
     
     class Meta:
-        verbose_name = 'Psicultura'
-        verbose_name_plural = 'Psiculturas'
+        verbose_name = 'Pscicultura'
+        verbose_name_plural = 'Psciculturas'
         
         
-class TipoProdutoPsicultura(TipoProdutoAnimal):
+class TipoProdutoPscicultura(TipoProdutoAnimal):
     
     class Meta:
-        verbose_name = 'Tipo Produto Psicultura'
-        verbose_name_plural = 'Tipos Produto Psicultura'
+        verbose_name = 'Tipo Produto Pscicultura'
+        verbose_name_plural = 'Tipos Produto Pscicultura'
         
 
-class ProdutoPsicultura(ProdutoAnimal):
+class Pscicultura(ProdutoUnidadeProducao):
     
-    psicultura = models.ForeignKey(Psicultura,verbose_name='Psicultura')
-    tipoProdutoPsicultura = models.ForeignKey(TipoProdutoPsicultura,verbose_name='Tipo Produto')     
+    class Meta:
+        verbose_name = 'Pscicultura'
+        verbose_name_plural = 'Pscicultura' 
+        
+
+class ProdutoPscicultura(ProdutoAnimal):
+    
+    pscicultura = models.ForeignKey(Pscicultura,verbose_name='Pscicultura')
+    tipoProdutoPsicultura = models.ForeignKey(TipoProdutoPscicultura,verbose_name='Tipo Produto')     
 
     class Meta:
-        verbose_name = 'Produto Psicultura'
-        verbose_name_plural = 'Produtos Psicultura'
+        verbose_name = 'Produto Pscicultura'
+        verbose_name_plural = 'Produtos Pscicultura'
         
         
-#Culturas
+#Culturas Agrícolas
 
 class TipoCultura(models.Model):
     
@@ -606,10 +679,17 @@ class TipoCultura(models.Model):
         verbose_name_plural = 'Tipos de Cultura'   
         
     def __unicode__(self):
-        return self.tipo     
+        return self.tipo    
+     
+
+class Agricultura(ProdutoUnidadeProducao):
+    
+    class Meta:
+        verbose_name = 'Agricultura'
+        verbose_name_plural = 'Agricultura'  
+            
         
-        
-class Cultura(models.Model):   
+class ProdutoAgricola(Produto):
     
     SISTEMA_CULTURA = (
         ('Monocultivo', 'Monocultivo'),
@@ -617,18 +697,55 @@ class Cultura(models.Model):
         ('Lavoura/Pecuária', 'Lavoura/Pecuária'),
     )
     
-    unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção')
+    agricultura = models.ForeignKey(Agricultura,verbose_name='Agricultura')
     tipoCultura = models.ForeignKey(TipoCultura,verbose_name='Tipo de Cultura')
     sistemaCultura = models.CharField('Sistema de Cultura',max_length=16,choices=SISTEMA_CULTURA)
     areaPlantada = models.DecimalField('Área Plantada(ha)',max_digits=8,decimal_places=2)
     produto = models.CharField('Produto',max_length=16)
     producaoEstimada = models.DecimalField('Produção Estimada',max_digits=8,decimal_places=2)
-    valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
     
     class Meta:
-        verbose_name = 'Cultura'
-        verbose_name_plural = 'Culturas'
+        verbose_name = 'Produto Agrícola'
+        verbose_name_plural = 'Produtos Agrícolas'
+        
+
+#Culturas Extrativistas
+
+class TipoExtrativismo(models.Model):
     
+    UNIDADE_MEDIDA_EXTRATIVISMO = (
+        ('M³', 'M³'),
+    )
+    
+    tipo = models.CharField('Tipo de Extrativismo',max_length=16)
+    UnidadeMedida = models.CharField('Unidade de Medida',max_length=8,choices=UNIDADE_MEDIDA_EXTRATIVISMO)
+    
+    class Meta:
+        verbose_name = 'Tipo de Extrativismo'
+        verbose_name_plural = 'Tipos de Extrativismo'   
+        
+    def __unicode__(self):
+        return self.tipo 
+    
+    
+class Extrativismo(ProdutoUnidadeProducao):
+    
+    class Meta:
+        verbose_name = 'Extrativismo'
+        verbose_name_plural = 'Extrativismo'
+        
+    
+class ProdutoExtrativismo(Produto):
+    
+    extrativismo = models.ForeignKey(Extrativismo,verbose_name='Extrativismo')
+    tipoExtrativismo = models.ForeignKey(TipoExtrativismo,verbose_name='Tipo de Extrativismo')
+    areaManejada = models.DecimalField('Área Manejada(ha)',max_digits=8,decimal_places=2)
+    produto = models.CharField('Produto',max_length=16)
+    producaoEstimada = models.DecimalField('Produção Estimada',max_digits=8,decimal_places=2)
+    
+    class Meta:
+        verbose_name = 'Produto Extrativismo'
+        verbose_name_plural = 'Produtos Extrativismo'
 
 #Rendas de Fora da Propriedade
 
