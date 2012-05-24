@@ -17,7 +17,7 @@ class OcultarAdmin(admin.ModelAdmin):
 class AdminPoliticaPublica(OcultarAdmin):
     pass
 
-class PoliticaPublicaInline(admin.TabularInline):
+class PoliticaPublicaInline(admin.StackedInline):
     model = PoliticaPublica_Beneficiario
     extra = 0
 
@@ -43,14 +43,14 @@ class RendaForaAgriculturaInline(admin.TabularInline):
     extra = 0
        
 #Beneficiario 
-class FamiliaInline(admin.TabularInline):
+class FamiliaInline(admin.StackedInline):
     model = Familia
     extra = 0
 
 class AdminBeneficiario(admin.ModelAdmin):
     fieldsets = (
             (None, {
-                'fields': ('municipio','denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),
+                'fields': (('uf','mesoRegiao'),('microRegiao','municipio'),'denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),
                            ('endereco','telefone'),('dap','situacao','classificacao'),)
             }),
         )
@@ -96,97 +96,164 @@ admin.site.register(PraticaConservacaoSolo,AdminPraticaConservacaoSolo)
 class AdminTipoBovino(OcultarAdmin):
     pass
 
-class AdminTipoProdutoBovino(OcultarAdmin):
+class AdminTipoProdutoBovinocultura(OcultarAdmin):
     pass
 
-class BovinoInline(admin.TabularInline):
+class BovinoInline(admin.StackedInline):
     model = Bovino
     extra = 0
     
+class ProdutoBovinoculturaInline(admin.TabularInline):
+    model = ProdutoBovinocultura
+    extra = 1
+    
+class AdminBovinocultura(admin.ModelAdmin):
+    inlines = [ProdutoBovinoculturaInline,]
+    
 admin.site.register(TipoBovino,AdminTipoBovino)
-admin.site.register(TipoProdutoBovino,AdminTipoProdutoBovino)
-admin.site.register(ProdutoBovino)
+admin.site.register(TipoProdutoBovinocultura,AdminTipoProdutoBovinocultura)
+admin.site.register(Bovinocultura,AdminBovinocultura)
 
 #Suino
 class AdminTipoSuino(OcultarAdmin):
     pass
 
-class AdminTipoProdutoSuino(OcultarAdmin):
+class AdminTipoProdutoSuinocultura(OcultarAdmin):
     pass
 
-class SuinoInline(admin.TabularInline):
+class SuinoInline(admin.StackedInline):
     model = Suino
     extra = 0
+    
+class ProdutoSuinoculturaInline(admin.TabularInline):
+    model = ProdutoSuinocultura
+    extra = 1
+    
+class AdminSuinocultura(admin.ModelAdmin):
+    inlines = [ProdutoSuinoculturaInline,]
 
 admin.site.register(TipoSuino,AdminTipoSuino)
-admin.site.register(TipoProdutoSuino,AdminTipoProdutoSuino)
-admin.site.register(ProdutoSuino)
+admin.site.register(TipoProdutoSuinocultura,AdminTipoProdutoSuinocultura)
+admin.site.register(Suinocultura,AdminSuinocultura)
 
 #Ovino/Caprino
 class AdminTipoOvinoCaprino(OcultarAdmin):
     pass
 
-class AdminTipoProdutoOvinoCaprino(OcultarAdmin):
+class AdminTipoProdutoOvinocaprinocultura(OcultarAdmin):
     pass
 
-class OvinoCaprinoInline(admin.TabularInline):
+class OvinoCaprinoInline(admin.StackedInline):
     model = OvinoCaprino
     extra = 0
+    
+class ProdutoOvinocaprinoculturaInline(admin.TabularInline):
+    model = ProdutoOvinocaprinocultura
+    extra = 1
+    
+class AdminOvinocaprinocultura(admin.ModelAdmin):
+    inlines = [ProdutoOvinocaprinoculturaInline,]
 
 admin.site.register(TipoOvinoCaprino,AdminTipoOvinoCaprino)
-admin.site.register(TipoProdutoOvinoCaprino,AdminTipoProdutoOvinoCaprino)
-admin.site.register(ProdutoOvinoCaprino)
+admin.site.register(TipoProdutoOvinocaprinocultura,AdminTipoProdutoOvinocaprinocultura)
+admin.site.register(Ovinocaprinocultura,AdminOvinocaprinocultura)
 
 #Aves
 class AdminTipoAve(OcultarAdmin):
     pass
 
-class AdminTipoProdutoAve(OcultarAdmin):
+class AdminTipoProdutoAvicultura(OcultarAdmin):
     pass
 
-class AveInline(admin.TabularInline):
+class AveInline(admin.StackedInline):
     model = Ave
     extra = 0
+    
+class ProdutoAviculturaInline(admin.TabularInline):
+    model = ProdutoAvicultura
+    extra = 1
+    
+class AdminAvicultura(admin.ModelAdmin):
+    inlines = [ProdutoAviculturaInline,]
 
 admin.site.register(TipoAve,AdminTipoAve)
-admin.site.register(TipoProdutoAve,AdminTipoProdutoAve)
-admin.site.register(ProdutoAve)
+admin.site.register(TipoProdutoAvicultura,AdminTipoProdutoAvicultura)
+admin.site.register(Avicultura,AdminAvicultura)
 
 #Apicultura
 class AdminTipoProdutoApicultura(OcultarAdmin):
     pass
 
-class ApiculturaInline(admin.TabularInline):
+class AbelhaInline(admin.StackedInline):
     model = Apicultura
+    extra = 0
+    
+class ProdutoApiculturaInline(admin.TabularInline):
+    model = ProdutoApicultura
     extra = 1
+    
+class AdminApicultura(admin.ModelAdmin):
+    inlines = [ProdutoApiculturaInline,]
 
 admin.site.register(TipoProdutoApicultura,AdminTipoProdutoApicultura)
-admin.site.register(ProdutoApicultura)
+admin.site.register(Apicultura,AdminApicultura)
 
 #Psicultura
 class AdminTipoProdutoPsicultura(OcultarAdmin):
     pass
 
-class PsiculturaInline(admin.TabularInline):
-    model = Psicultura
+class PeixeInline(admin.StackedInline):
+    model = Peixe
     extra = 0
+    
+class ProdutoPsciculturaInline(admin.TabularInline):
+    model = ProdutoPscicultura
+    extra = 1
+    
+class AdminPscicultura(admin.ModelAdmin):
+    inlines = [ProdutoPsciculturaInline,]
 
-admin.site.register(TipoProdutoPsicultura,AdminTipoProdutoPsicultura)
-admin.site.register(ProdutoPsicultura)
+admin.site.register(TipoProdutoPscicultura,AdminTipoProdutoPsicultura)
+admin.site.register(Pscicultura,AdminPscicultura)
 
 #Outros ???
 #admin.site.register(Outros)
 
-#Culturas
+#Culturas Agrícolas
 class AdminTipoCultura(OcultarAdmin):
     pass
 
+class ProdutoAgricolaInline(admin.TabularInline):
+    model = ProdutoAgricola
+    extra = 1
+    
+class AdminAgricultura(admin.ModelAdmin):
+    inlines = [ProdutoAgricolaInline,]
+
 admin.site.register(TipoCultura,AdminTipoCultura)
-admin.site.register(Cultura)
+admin.site.register(Agricultura,AdminAgricultura)
+
+#Extrativismo
+class AdminTipoExtrativismo(OcultarAdmin):
+    pass
+
+class ProdutoExtrativismoInline(admin.TabularInline):
+    model = ProdutoExtrativismo
+    extra = 1
+
+class AdminExtrativismo(admin.ModelAdmin):
+    inlines = [ProdutoExtrativismoInline,]
+
+admin.site.register(TipoExtrativismo,AdminTipoExtrativismo)
+admin.site.register(Extrativismo,AdminExtrativismo)
 
 #Unidade de Produção
 class AdminTerra(OcultarAdmin):
     pass
+
+class TerraInline(admin.TabularInline):
+    model = Terra_UnidadeProducao
+    extra = 0
 
 class AdminBenfeitoria(OcultarAdmin):
     pass
@@ -202,7 +269,7 @@ class EquipamentoTrabalhoInline(admin.TabularInline):
     model = EquipamentoTrabalho_UnidadeProducao
     extra = 0
     
-class ConfrontacaoInline(admin.TabularInline):
+class ConfrontacaoInline(admin.StackedInline):
     model = Confrontacao
     extra = 0
 
@@ -211,7 +278,7 @@ class AdminUnidadeProducao(AdminGeo):
                         'preparoSolo','praticaConservacaoSolo','insumosOrganicos','utilizacaoArvores',)
     fieldsets = (
             (None, {
-                'fields': ('municipio','ponto',('denominacao','beneficiario'),('localizacao','area'),
+                'fields': (('uf','mesoRegiao'),('microRegiao','municipio','beneficiario'),'ponto','denominacao',('localizacao','area'),
                            ('tituloDominio','participacao'),('registro','dataRegistro'),'receitaFederal')
             }),
             ('Avançado', {
@@ -222,14 +289,15 @@ class AdminUnidadeProducao(AdminGeo):
             }),
         )
     inlines = [ConfrontacaoInline,
+               TerraInline,
                BenfeitoriaInline,
                EquipamentoTrabalhoInline,
                BovinoInline,
                SuinoInline,
                OvinoCaprinoInline,
                AveInline,
-               ApiculturaInline,
-               PsiculturaInline,
+               AbelhaInline,
+               PeixeInline,
                ]
 
 admin.site.register(UnidadeProducao,AdminUnidadeProducao)

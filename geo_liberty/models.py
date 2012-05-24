@@ -29,7 +29,7 @@ class Linha(models.Model):
         
 class Ponto(models.Model):
     
-    ponto = models.MultiPointField('Ponto')
+    ponto = models.PointField('Ponto')
     
     class Meta:
         abstract = True
