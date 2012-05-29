@@ -16,7 +16,7 @@ class Proprietario(PessoaFisica):
     microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
     municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
     rg = models.CharField('RG',max_length=16)
-    telefone = models.CharField('Telefone',max_length=16)
+    telefone = models.CharField('Telefone',max_length=16,blank=True)
     endereco = models.CharField('Endereço',max_length=32)
     estadoCivil = models.CharField('Estado Civil',max_length=8,choices=OPCOES_ESTADO_CIVIL)
     
@@ -42,29 +42,36 @@ class Propriedade(Ponto):
       
           
 #Beneficiário
-        
+
+class Classificacao(models.Model):
+    
+    situacao = models.CharField('Situação',max_length=32)
+   
+    class Meta:
+        verbose_name = 'Classificação'
+        verbose_name_plural = 'Classificações'
+
+      
 class Beneficiario(Proprietario):
     
-    CLASSIFICACAO = (
-        ('Quilombola', 'Quilombola'),
-        ('Extrativista', 'Extrativista'),
-        ('Ribeirinho', 'Ribeirinho'),
-        ('Assentado', 'Assentado'),
+    SITUACAO = (
+        ('Ativo', 'Ativo'),
+        ('Inativo', 'Inativo'),
     )
     
-    dap = models.CharField('Nº DAP',max_length=2)
-    situacao = models.CharField('Situação',max_length=16)
-    classificacao = models.CharField('Classificação',max_length=16,choices=CLASSIFICACAO)
+    dap = models.CharField('Nº DAP',max_length=16)
+    situacao = models.CharField('Situação',max_length=16,choices=SITUACAO)
+    classificacao = models.ForeignKey(Classificacao,verbose_name='Classificação')
 
     class Meta:
         verbose_name = 'Beneficiário'
         verbose_name_plural = 'Beneficiários'
-        
+      
 
 class Familia(PessoaFisica):
     
     parentesco = models.CharField('Parentesco',max_length=16)
-    dap = models.CharField('Nº DAP',max_length=2)
+    dap = models.CharField('Nº DAP',max_length=16,blank=True)
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiario')
 
     class Meta:
@@ -77,8 +84,8 @@ class Familia(PessoaFisica):
 class DestinoLixo(models.Model):
     
     TIPO_LIXO = (
-        ('Orgânico', 'Orgânico'),
-        ('Inorgânico', 'Inorgânico'),
+        ('Organico', 'Orgânico'),
+        ('Inorganico', 'Inorgânico'),
     )
     
     destino = models.CharField('Destino do Lixo',max_length=16)
@@ -175,17 +182,17 @@ class UnidadeProducao(Propriedade):
     )
     
     beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
-    participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2)
-    tituloDominio = models.CharField('Título de Domínio',max_length=16)
-    dataRegistro = models.DateField('Data de Registro')
-    registro = models.CharField('Registro',max_length=16)
+    participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2,blank=True)
+    tituloDominio = models.CharField('Título de Domínio',max_length=16,blank=True)
+    dataRegistro = models.DateField('Data de Registro',blank=True)
+    registro = models.CharField('Registro',max_length=16,blank=True)
     receitaFederal = models.CharField('Nº Receita Federal (ITR)',max_length=16)
     qualidadeAgua = models.CharField('Qualidade da Água',max_length=8,choices=QUALIDADE_AGUA,blank=True)
     destinoLixo = models.ManyToManyField(DestinoLixo,verbose_name='Destino do Lixo',blank=True)
     utilizacaoAgrotoxico = models.ManyToManyField(Agrotoxico,verbose_name='Utilização de Agrotóxicos',blank=True)
     destinoEmbalagemAgrotoxico = models.ManyToManyField(DestinoEmbalagemAgrotoxico,verbose_name='Destino da Embalagem de Agrotóxico',blank=True)
     preparoSolo = models.ManyToManyField(PreparoSolo,verbose_name='Preparo do Solo',blank=True)
-    areaErosao = models.DecimalField('Área com Erosão',max_digits=8,decimal_places=2,blank=True)
+    areaErosao = models.DecimalField('Área com Erosão',max_digits=8,decimal_places=2,blank=True,null=True,default='0.0')
     praticaConservacaoSolo = models.ManyToManyField(PraticaConservacaoSolo,verbose_name='Pratica de Conservação do Solo',blank=True)
     insumosOrganicos = models.ManyToManyField(InsumosOrganicos,verbose_name='Insumos Orgânicos',blank=True)
     rotacaoCultura = models.BooleanField('Rotação de Cultura',blank=True)
@@ -242,8 +249,8 @@ class Terra_UnidadeProducao(models.Model):
 class Benfeitoria(models.Model):
     
     UNIDADE = (
-        ('M³', 'M³'),
-        ('M²', 'M²'),
+        ('M3', 'M³'),
+        ('M2', 'M²'),
         ('Km', 'Km'),
         ('Un', 'Un'),
     )
@@ -266,7 +273,7 @@ class Benfeitoria_UnidadeProducao(models.Model):
     benfeitoria = models.ForeignKey(Benfeitoria,verbose_name='Benfeitoria')
     quantidade = models.DecimalField('Área',max_digits=3,decimal_places=2)
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    obervacoes = models.TextField('Observações')
+    obervacoes = models.TextField('Observações',blank=True)
     
     class Meta:
         verbose_name = 'Benfeitoria de Unidade de Produção'
@@ -292,7 +299,7 @@ class EquipamentoTrabalho_UnidadeProducao(models.Model):
     equipamentoTrabalho = models.ForeignKey(EquipamentoTrabalho,verbose_name='Equipamento de Trabalho')
     quantidade = models.IntegerField('Quantidade')
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    capacidadePotencia = models.CharField('Capacidade / Potência',max_length=8)
+    capacidadePotencia = models.CharField('Capacidade(Kg) / Potência(Cv)',max_length=8)
     mediaIdade = models.IntegerField('Média de Idade(anos)')
     
     class Meta:
@@ -316,7 +323,7 @@ class AnimalTerrestre(models.Model):
     mediaIdade = models.IntegerField('Idade Média(mês)')
     raca = models.CharField('Raça',max_length=16)
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    localizacao = models.CharField('Localização',max_length=32)
+    localizacao = models.CharField('Localização',max_length=32,blank=True)
     
     class Meta:
         abstract = True
@@ -568,7 +575,7 @@ class Abelha(models.Model):
     modeloColmeia = models.CharField('Modelo Colméia',max_length=16)
     especie = models.CharField('Espécie',max_length=16)
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    localizacao = models.CharField('Localização',max_length=32)
+    localizacao = models.CharField('Localização',max_length=32,blank=True)
     
     class Meta:
         verbose_name = 'Apicultura'
@@ -629,7 +636,7 @@ class Peixe(models.Model):
     especie = models.CharField('Espécie',max_length=16)
     quantidade = models.DecimalField('Quantidade(ha)',max_digits=8,decimal_places=2)
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
-    localizacao = models.CharField('Localização',max_length=32)
+    localizacao = models.CharField('Localização',max_length=32,blank=True)
     sistemaProducao = models.CharField('Sistema de Produção',max_length=16,choices=SISTEMA_PRODUCAO)
     
     class Meta:
@@ -688,18 +695,21 @@ class Agricultura(ProdutoUnidadeProducao):
         verbose_name = 'Agricultura'
         verbose_name_plural = 'Agricultura'  
             
+      
+class SistemaCultura(models.Model):
+    
+    sistema = models.CharField('Sistema de Cultura',max_length=32)
+     
+    class Meta:
+        verbose_name = 'Sistema de Cultura'
+        verbose_name_plural = 'Sistemas de Cultura' 
+        
         
 class ProdutoAgricola(Produto):
     
-    SISTEMA_CULTURA = (
-        ('Monocultivo', 'Monocultivo'),
-        ('Policultivo', 'Policultivo'),
-        ('Lavoura/Pecuária', 'Lavoura/Pecuária'),
-    )
-    
     agricultura = models.ForeignKey(Agricultura,verbose_name='Agricultura')
     tipoCultura = models.ForeignKey(TipoCultura,verbose_name='Tipo de Cultura')
-    sistemaCultura = models.CharField('Sistema de Cultura',max_length=16,choices=SISTEMA_CULTURA)
+    sistemaCultura = models.ForeignKey(SistemaCultura,verbose_name='Sistema de Cultura')
     areaPlantada = models.DecimalField('Área Plantada(ha)',max_digits=8,decimal_places=2)
     produto = models.CharField('Produto',max_length=16)
     producaoEstimada = models.DecimalField('Produção Estimada',max_digits=8,decimal_places=2)
@@ -714,7 +724,7 @@ class ProdutoAgricola(Produto):
 class TipoExtrativismo(models.Model):
     
     UNIDADE_MEDIDA_EXTRATIVISMO = (
-        ('M³', 'M³'),
+        ('M3', 'M³'),
     )
     
     tipo = models.CharField('Tipo de Extrativismo',max_length=16)
@@ -758,7 +768,7 @@ class RendaForaPropriedade(models.Model):
     )
     
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
-    nome = models.CharField('Nome',max_length=64)
+    nome = models.CharField('Nome Pessoa',max_length=64)
     atividade = models.CharField('Atividade',max_length=32)
     valor = models.DecimalField('Valor',max_digits=8,decimal_places=2)
     frequencia = models.CharField('Frequência',max_length=8,choices=FREQUENCIA)
@@ -776,7 +786,7 @@ class RendaForaPropriedade(models.Model):
 class RendaForaAgricultura(models.Model):
     
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
-    nome = models.CharField('Nome',max_length=32)
+    nome = models.CharField('Nome Pessoa',max_length=32)
     atividade = models.CharField('Atividade',max_length=32)
     receita = models.DecimalField('Receita',max_digits=8,decimal_places=2)
     custo = models.DecimalField('Custo',max_digits=8,decimal_places=2)
@@ -786,7 +796,7 @@ class RendaForaAgricultura(models.Model):
         verbose_name_plural = 'Rendas de Fora da Agricultura'
         
     def __unicode__(self):
-        return self.familia
+        return self.nome
         
         
 #Comercialização
@@ -801,18 +811,26 @@ class TipoComercializacao(models.Model):
         
     def __unicode__(self):
         return self.forma
-    
 
-class Comercializacao(models.Model):
+
+class Comercializacao(ProdutoUnidadeProducao):
     
+    class Meta:
+        verbose_name = 'Comercialização'
+        verbose_name_plural = 'Comercialização'
+           
+
+class ProdutoComercializacao(models.Model):
+    
+    comercializacao = models.ForeignKey(Comercializacao,verbose_name='Comercialização')
     forma = models.ForeignKey(TipoComercializacao,verbose_name='Forma')
     produto = models.CharField('Produto',max_length=16)
     quantidade = models.DecimalField('Quantidade',max_digits=8,decimal_places=2)
     renda = models.DecimalField('Renda',max_digits=8,decimal_places=2)
     
     class Meta:
-        verbose_name = 'Comercialização'
-        verbose_name_plural = 'Comercializações'
+        verbose_name = 'Produto Comercialização'
+        verbose_name_plural = 'Protudo Comercialização'
         
 
 #Acesso a Políticas Públicas
@@ -839,14 +857,14 @@ class PoliticaPublica_Beneficiario(models.Model):
     
     politicaPublica = models.ForeignKey(PoliticaPublica,verbose_name='Política Pública')
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
-    linha = models.CharField('Linha',max_length=16)
-    modalidade = models.CharField('Modalidade',max_length=16)
-    valor = models.DecimalField('Valor',max_digits=8,decimal_places=2)
-    situacao = models.CharField('Situação',max_length=16,choices=SITUACAO)
-    destino = models.CharField('Destino',max_length=16)
-    anoAcesso = models.CharField('Ano de Acesso',max_length=4)
-    entidade = models.CharField('Entidade',max_length=16)
-    renegociacao = models.BooleanField('Renegociação')
+    linha = models.CharField('Linha',max_length=16,blank=True)
+    modalidade = models.CharField('Modalidade',max_length=16,blank=True)
+    valor = models.DecimalField('Valor',max_digits=8,decimal_places=2,blank=True)
+    situacao = models.CharField('Situação',max_length=16,choices=SITUACAO,blank=True)
+    destino = models.CharField('Destino',max_length=16,blank=True)
+    anoAcesso = models.CharField('Ano de Acesso',max_length=4,blank=True)
+    entidade = models.CharField('Entidade',max_length=16,blank=True)
+    renegociacao = models.BooleanField('Renegociação',blank=True)
            
     class Meta:
         verbose_name = 'Acesso a Política Pública'

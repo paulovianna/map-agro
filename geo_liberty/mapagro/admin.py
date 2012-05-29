@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.contrib.gis import admin
 from models import *
+from forms import *
 
 #Classe Model Ojetos Geográficos
 class AdminGeo(admin.OSMGeoAdmin):
     scrollable = True
+    default_lon = -5956124.6164004
+    default_lat = -3176977.5384032
+    default_zoom = 6
     map_width = 700
     map_height = 350
     
@@ -42,7 +46,10 @@ class RendaForaAgriculturaInline(admin.TabularInline):
     model = RendaForaAgricultura
     extra = 0
        
-#Beneficiario 
+#Beneficiario
+class AdminClassificacao(OcultarAdmin):
+    pass
+
 class FamiliaInline(admin.StackedInline):
     model = Familia
     extra = 0
@@ -60,6 +67,7 @@ class AdminBeneficiario(admin.ModelAdmin):
                 RendaForaPropriedadeInline,
                 RendaForaAgriculturaInline,]
    
+admin.site.register(Classificacao,AdminClassificacao)
 admin.site.register(Beneficiario,AdminBeneficiario)
 
 #Informações Gerais Unidade de Produção
@@ -185,7 +193,7 @@ class AdminTipoProdutoApicultura(OcultarAdmin):
     pass
 
 class AbelhaInline(admin.StackedInline):
-    model = Apicultura
+    model = Abelha
     extra = 0
     
 class ProdutoApiculturaInline(admin.TabularInline):
@@ -223,6 +231,9 @@ admin.site.register(Pscicultura,AdminPscicultura)
 class AdminTipoCultura(OcultarAdmin):
     pass
 
+class AdminSistemaCultura(OcultarAdmin):
+    pass
+
 class ProdutoAgricolaInline(admin.TabularInline):
     model = ProdutoAgricola
     extra = 1
@@ -231,6 +242,7 @@ class AdminAgricultura(admin.ModelAdmin):
     inlines = [ProdutoAgricolaInline,]
 
 admin.site.register(TipoCultura,AdminTipoCultura)
+admin.site.register(SistemaCultura,AdminSistemaCultura)
 admin.site.register(Agricultura,AdminAgricultura)
 
 #Extrativismo
@@ -272,13 +284,18 @@ class EquipamentoTrabalhoInline(admin.TabularInline):
 class ConfrontacaoInline(admin.StackedInline):
     model = Confrontacao
     extra = 0
+    max_num = 1
 
 class AdminUnidadeProducao(AdminGeo):
+    
+    form = FormUnidadeProducao
     filter_horizontal = ('destinoLixo','utilizacaoAgrotoxico','destinoEmbalagemAgrotoxico',
                         'preparoSolo','praticaConservacaoSolo','insumosOrganicos','utilizacaoArvores',)
     fieldsets = (
             (None, {
-                'fields': (('uf','mesoRegiao'),('microRegiao','municipio','beneficiario'),'ponto','denominacao',('localizacao','area'),
+                'fields': (('uf','mesoRegiao'),('microRegiao','municipio','beneficiario'),'ponto',
+                           ('longrau','lonminuto','lonsegundo'),('latgrau','latminuto','latsegundo'),
+                           'denominacao',('localizacao','area'),
                            ('tituloDominio','participacao'),('registro','dataRegistro'),'receitaFederal')
             }),
             ('Avançado', {
@@ -309,5 +326,12 @@ admin.site.register(EquipamentoTrabalho,AdminEquipamentoTrabalho)
 class AdminTipoComercializacao(OcultarAdmin):
     pass
 
+class ProdutoComercializacaoInline(admin.TabularInline):
+    model = ProdutoComercializacao
+    extra = 1
+    
+class AdminComercializacao(admin.ModelAdmin):
+    inlines = [ProdutoComercializacaoInline,]
+    
 admin.site.register(TipoComercializacao,AdminTipoComercializacao)
-admin.site.register(Comercializacao)
+admin.site.register(Comercializacao,AdminComercializacao)

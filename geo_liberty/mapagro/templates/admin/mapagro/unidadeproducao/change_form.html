@@ -1,0 +1,27 @@
+{% extends "admin/change_form.html" %}
+
+{% block after_field_sets %}
+<script type="text/javascript">
+	(function($) {
+		$("<a id='converte'><b> Verficar Ponto</b></a>").insertAfter("#id_latsegundo");
+		$("#converte").click(function() {
+			longrau = parseFloat($("#id_longrau").val());
+			lonmin = parseFloat($("#id_lonminuto").val());
+			lonseg = parseFloat($("#id_lonsegundo").val());
+			latgrau = parseFloat($("#id_latgrau").val());
+			latmin = parseFloat($("#id_latminuto").val());
+			latseg = parseFloat($("#id_latsegundo").val());
+			var longitude = (longrau + (lonmin / 60)  + (lonseg / 3600)) * (-1);
+			var latitude = (latgrau + (latmin / 60)  + (latseg / 3600)) * (-1);
+			geodjango_ponto.clearFeatures();
+			var ponto = new OpenLayers.Feature.Vector(
+			new OpenLayers.Geometry.Point(latitude,longitude).transform(
+		        new OpenLayers.Projection("EPSG:4326"),
+		        geodjango_ponto.map.getProjectionObject(),1
+		    ),{});
+		    geodjango_ponto.write_wkt(ponto);
+      		geodjango_ponto.layers.vector.addFeatures([ponto]);
+		});    
+	})(django.jQuery);
+</script>
+{% endblock %}
