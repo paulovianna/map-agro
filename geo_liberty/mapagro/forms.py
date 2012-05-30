@@ -13,8 +13,7 @@ class FormUnidadeProducao(forms.ModelForm):
     
     class Meta:
         fields = ('longrau','lonminuto','lonsegundo','latgrau','latminuto','latsegundo',
-                  'uf','mesoRegiao','microRegiao','municipio',
-                  'beneficiario','ponto','denominacao','localizacao','area',
+                  'municipio','beneficiario','ponto','denominacao','localizacao','area',
                   'tituloDominio','participacao','registro','dataRegistro',
                   'receitaFederal','qualidadeAgua','destinoLixo','utilizacaoAgrotoxico',
                   'destinoEmbalagemAgrotoxico','preparoSolo','areaErosao','praticaConservacaoSolo',

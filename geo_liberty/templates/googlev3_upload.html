@@ -9,7 +9,7 @@
 		function init() {
 		    map = new OpenLayers.Map('map');
 		    map.addControl(new OpenLayers.Control.LayerSwitcher());
-		    
+
 		    var gphy = new OpenLayers.Layer.Google(
 		        "Google Physical",
 		        {type: google.maps.MapTypeId.TERRAIN}
@@ -26,7 +26,7 @@
 		        "Google Satellite",
 		        {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}
 		    );
-			
+
 		    var geojson_format = new OpenLayers.Format.GeoJSON();
 		    var vector_layer = new OpenLayers.Layer.Vector(); 
 		    map.addLayers([ghyb,gmap,gphy,gsat,vector_layer]);

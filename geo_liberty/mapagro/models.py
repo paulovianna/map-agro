@@ -11,10 +11,8 @@ class Proprietario(PessoaFisica):
         ('Casado', 'Casado'),
         ('Solteiro', 'Solteiro'),
     )
-    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
-    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
-    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
-    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    
+    municipio = models.ForeignKey(Municipio,default=4321329)
     rg = models.CharField('RG',max_length=16)
     telefone = models.CharField('Telefone',max_length=16,blank=True)
     endereco = models.CharField('Endereço',max_length=32)
@@ -26,10 +24,11 @@ class Proprietario(PessoaFisica):
     
 class Propriedade(Ponto):
     
-    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
-    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
-    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
-    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    #uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
+    #mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
+    #microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
+    #municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    municipio = models.ForeignKey(Municipio,default=4321329)
     denominacao = models.CharField('Denominação',max_length=32)
     localizacao = models.CharField('Localização',max_length=32)
     area = models.FloatField('Área')
@@ -50,6 +49,9 @@ class Classificacao(models.Model):
     class Meta:
         verbose_name = 'Classificação'
         verbose_name_plural = 'Classificações'
+        
+    def __unicode__(self):
+        return self.situacao
 
       
 class Beneficiario(Proprietario):
@@ -182,9 +184,9 @@ class UnidadeProducao(Propriedade):
     )
     
     beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
-    participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2,blank=True)
+    participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2,blank=True,null=True)
     tituloDominio = models.CharField('Título de Domínio',max_length=16,blank=True)
-    dataRegistro = models.DateField('Data de Registro',blank=True)
+    dataRegistro = models.DateField('Data de Registro',blank=True,null=True)
     registro = models.CharField('Registro',max_length=16,blank=True)
     receitaFederal = models.CharField('Nº Receita Federal (ITR)',max_length=16)
     qualidadeAgua = models.CharField('Qualidade da Água',max_length=8,choices=QUALIDADE_AGUA,blank=True)
@@ -211,7 +213,7 @@ class Confrontacao(models.Model):
     sul = models.CharField('Sul',max_length=8)
     leste = models.CharField('Leste',max_length=8)
     oeste = models.CharField('Oeste',max_length=8)
-    roteiroAcesso = models.TextField('Roteiro de Acesso')
+    roteiroAcesso = models.TextField('Roteiro de Acesso',blank=True)
     
     class Meta:
         verbose_name = 'Confrontação'
@@ -350,10 +352,11 @@ class TipoProdutoAnimal(models.Model):
     
 class ProdutoUnidadeProducao(models.Model):
     
-    uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
-    mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
-    microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
-    municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    #uf = models.ForeignKey(Uf,verbose_name='Unidade Federativa')
+    #mesoRegiao = ChainedForeignKey(MesoRegiao, chained_field="uf",chained_model_field="uf",verbose_name='Mesorregião')
+    #microRegiao = ChainedForeignKey(MicroRegiao, chained_field="mesoRegiao",chained_model_field="mesoRegiao",verbose_name='Microrregião')
+    #municipio = ChainedForeignKey(Municipio, chained_field="microRegiao",chained_model_field="microRegiao",verbose_name='Município')
+    municipio = models.ForeignKey(Municipio,default=4321329)
     beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
     unidadeProducao = ChainedForeignKey(UnidadeProducao, chained_field="beneficiario",chained_model_field="beneficiario",verbose_name='Unidade de Produção')
     
@@ -859,7 +862,7 @@ class PoliticaPublica_Beneficiario(models.Model):
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
     linha = models.CharField('Linha',max_length=16,blank=True)
     modalidade = models.CharField('Modalidade',max_length=16,blank=True)
-    valor = models.DecimalField('Valor',max_digits=8,decimal_places=2,blank=True)
+    valor = models.DecimalField('Valor',max_digits=8,decimal_places=2,blank=True,null=True)
     situacao = models.CharField('Situação',max_length=16,choices=SITUACAO,blank=True)
     destino = models.CharField('Destino',max_length=16,blank=True)
     anoAcesso = models.CharField('Ano de Acesso',max_length=4,blank=True)

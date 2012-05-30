@@ -55,9 +55,11 @@ class FamiliaInline(admin.StackedInline):
     extra = 0
 
 class AdminBeneficiario(admin.ModelAdmin):
+    
+    readonly_fields = ('municipio',)
     fieldsets = (
             (None, {
-                'fields': (('uf','mesoRegiao'),('microRegiao','municipio'),'denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),
+                'fields': ('municipio','denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),
                            ('endereco','telefone'),('dap','situacao','classificacao'),)
             }),
         )
@@ -289,11 +291,12 @@ class ConfrontacaoInline(admin.StackedInline):
 class AdminUnidadeProducao(AdminGeo):
     
     form = FormUnidadeProducao
+    list_display = ['beneficiario','denominacao']
     filter_horizontal = ('destinoLixo','utilizacaoAgrotoxico','destinoEmbalagemAgrotoxico',
                         'preparoSolo','praticaConservacaoSolo','insumosOrganicos','utilizacaoArvores',)
     fieldsets = (
             (None, {
-                'fields': (('uf','mesoRegiao'),('microRegiao','municipio','beneficiario'),'ponto',
+                'fields': (('municipio','beneficiario'),'ponto',
                            ('longrau','lonminuto','lonsegundo'),('latgrau','latminuto','latsegundo'),
                            'denominacao',('localizacao','area'),
                            ('tituloDominio','participacao'),('registro','dataRegistro'),'receitaFederal')

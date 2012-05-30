@@ -3,7 +3,7 @@
 {% block after_field_sets %}
 <script type="text/javascript">
 	(function($) {
-		$("<a id='converte'><b> Verficar Ponto</b></a>").insertAfter("#id_latsegundo");
+		$("<a id='converte' style='cursor:pointer'><b> Verficar Ponto</b></a>").insertAfter("#id_latsegundo");
 		$("#converte").click(function() {
 			longrau = parseFloat($("#id_longrau").val());
 			lonmin = parseFloat($("#id_lonminuto").val());
