@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.gis.db import models
 from geo_liberty.smart_selects.db_fields import ChainedForeignKey 
-from geo_liberty.models import PessoaFisica,Ponto,Municipio,MicroRegiao,MesoRegiao,Uf
+from geo_liberty.models import PessoaFisica,Ponto,Municipio
 
 #Classes Abstratas
 
@@ -90,7 +90,7 @@ class DestinoLixo(models.Model):
         ('Inorganico', 'Inorgânico'),
     )
     
-    destino = models.CharField('Destino do Lixo',max_length=16)
+    destino = models.CharField('Destino do Lixo',max_length=32)
     tipoLixo = models.CharField('Tipo Lixo',max_length=16,choices=TIPO_LIXO)
      
     class Meta:
@@ -103,7 +103,7 @@ class DestinoLixo(models.Model):
 
 class Agrotoxico(models.Model):
     
-    agrotoxico = models.CharField('Agrotóxico',max_length=16)
+    agrotoxico = models.CharField('Agrotóxico',max_length=32)
     
     class Meta:
         verbose_name = 'Agrotóxico'
@@ -115,7 +115,7 @@ class Agrotoxico(models.Model):
         
 class DestinoEmbalagemAgrotoxico(models.Model):
     
-    destino = models.CharField('Destino de Embalagem de Agrotóxico',max_length=16)
+    destino = models.CharField('Destino de Embalagem de Agrotóxico',max_length=32)
     
     class Meta:
         verbose_name = 'Destino de Embalagem de Agrotóxico'
@@ -139,7 +139,7 @@ class PreparoSolo(models.Model):
        
 class InsumosOrganicos(models.Model):
     
-    insumoOrganico = models.CharField('Insumo Orgânico',max_length=16)
+    insumoOrganico = models.CharField('Insumo Orgânico',max_length=32)
     
     class Meta:
         verbose_name = 'Insumo Orgânico'
@@ -151,7 +151,7 @@ class InsumosOrganicos(models.Model):
 
 class UtilizacaoArvores(models.Model):
     
-    utilizacaoArvore = models.CharField('Utilização de Árvores',max_length=16)
+    utilizacaoArvore = models.CharField('Utilização de Árvores',max_length=32)
     
     class Meta:
         verbose_name = 'Utilização de Árvore'
@@ -163,7 +163,7 @@ class UtilizacaoArvores(models.Model):
         
 class PraticaConservacaoSolo(models.Model):
     
-    conservacaoSolo = models.CharField('Prática de Conservação do Solo',max_length=16)
+    conservacaoSolo = models.CharField('Prática de Conservação do Solo',max_length=32)
     
     class Meta:
         verbose_name = 'Prática de Conservação do Solo'
@@ -183,44 +183,41 @@ class UnidadeProducao(Propriedade):
         ('Ruim', 'Ruim'),
     )
     
-    beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name='Beneficiário')
-    participacao = models.DecimalField('Participação %',max_digits=8,decimal_places=2,blank=True,null=True)
-    tituloDominio = models.CharField('Título de Domínio',max_length=16,blank=True)
-    dataRegistro = models.DateField('Data de Registro',blank=True,null=True)
-    registro = models.CharField('Registro',max_length=16,blank=True)
-    receitaFederal = models.CharField('Nº Receita Federal (ITR)',max_length=16)
-    qualidadeAgua = models.CharField('Qualidade da Água',max_length=8,choices=QUALIDADE_AGUA,blank=True)
-    destinoLixo = models.ManyToManyField(DestinoLixo,verbose_name='Destino do Lixo',blank=True)
-    utilizacaoAgrotoxico = models.ManyToManyField(Agrotoxico,verbose_name='Utilização de Agrotóxicos',blank=True)
-    destinoEmbalagemAgrotoxico = models.ManyToManyField(DestinoEmbalagemAgrotoxico,verbose_name='Destino da Embalagem de Agrotóxico',blank=True)
-    preparoSolo = models.ManyToManyField(PreparoSolo,verbose_name='Preparo do Solo',blank=True)
-    areaErosao = models.DecimalField('Área com Erosão',max_digits=8,decimal_places=2,blank=True,null=True,default='0.0')
-    praticaConservacaoSolo = models.ManyToManyField(PraticaConservacaoSolo,verbose_name='Pratica de Conservação do Solo',blank=True)
-    insumosOrganicos = models.ManyToManyField(InsumosOrganicos,verbose_name='Insumos Orgânicos',blank=True)
-    rotacaoCultura = models.BooleanField('Rotação de Cultura',blank=True)
-    utilizacaoArvores = models.ManyToManyField(UtilizacaoArvores,verbose_name='Utilização de Árvores',blank=True)
+    beneficiario = ChainedForeignKey(Beneficiario, chained_field="municipio",chained_model_field="municipio",verbose_name=u'Beneficiário')
+    participacao = models.DecimalField(u'Participação %',max_digits=8,decimal_places=2,blank=True,null=True)
+    tituloDominio = models.CharField(u'Título de Domínio',max_length=16,blank=True)
+    dataRegistro = models.DateField(u'Data de Registro',blank=True,null=True)
+    registro = models.CharField(u'Registro',max_length=16,blank=True)
+    receitaFederal = models.CharField(u'Nº Receita Federal (ITR)',max_length=16)
+    qualidadeAgua = models.CharField(u'Qualidade da Água',max_length=8,choices=QUALIDADE_AGUA,blank=True)
+    destinoLixo = models.ManyToManyField(DestinoLixo,verbose_name=u'Destino do Lixo',blank=True)
+    utilizacaoAgrotoxico = models.ManyToManyField(Agrotoxico,verbose_name=u'Utilização de Agrotóxicos',blank=True)
+    destinoEmbalagemAgrotoxico = models.ManyToManyField(DestinoEmbalagemAgrotoxico,verbose_name=u'Destino da Embalagem de Agrotóxico',blank=True)
+    preparoSolo = models.ManyToManyField(PreparoSolo,verbose_name=u'Preparo do Solo',blank=True)
+    areaErosao = models.DecimalField(u'Área com Erosão',max_digits=8,decimal_places=2,blank=True,null=True,default='0.0')
+    praticaConservacaoSolo = models.ManyToManyField(PraticaConservacaoSolo,verbose_name=u'Pratica de Conservação do Solo',blank=True)
+    insumosOrganicos = models.ManyToManyField(InsumosOrganicos,verbose_name=u'Insumos Orgânicos',blank=True)
+    rotacaoCultura = models.BooleanField(u'Rotação de Cultura',blank=True)
+    utilizacaoArvores = models.ManyToManyField(UtilizacaoArvores,verbose_name=u'Utilização de Árvores',blank=True)
     
     class Meta:
-        verbose_name = 'Unidade de Produção Familiar'
-        verbose_name_plural = 'Unidades de Produção Familiar'
+        verbose_name = u'Unidade de Produção Familiar'
+        verbose_name_plural = u'Unidades de Produção Familiar'
     
     
 
 class Confrontacao(models.Model):
     
     unidadeProducao = models.ForeignKey(UnidadeProducao,verbose_name='Unidade de Produção Familiar')
-    norte = models.CharField('Norte',max_length=8)
-    sul = models.CharField('Sul',max_length=8)
-    leste = models.CharField('Leste',max_length=8)
-    oeste = models.CharField('Oeste',max_length=8)
+    norte = models.CharField('Norte',max_length=32)
+    sul = models.CharField('Sul',max_length=32)
+    leste = models.CharField('Leste',max_length=32)
+    oeste = models.CharField('Oeste',max_length=32)
     roteiroAcesso = models.TextField('Roteiro de Acesso',blank=True)
     
     class Meta:
         verbose_name = 'Confrontação'
         verbose_name_plural = 'Confrontações'
-        
-    def __unicode__(self):
-        return self.unidadeProducao
     
     
 class Terra(models.Model):
@@ -273,7 +270,7 @@ class Benfeitoria_UnidadeProducao(models.Model):
     
     unidadeProducao = models.ForeignKey(UnidadeProducao)
     benfeitoria = models.ForeignKey(Benfeitoria,verbose_name='Benfeitoria')
-    quantidade = models.DecimalField('Área',max_digits=3,decimal_places=2)
+    quantidade = models.DecimalField('Quantidade',max_digits=3,decimal_places=2)
     valorUnitario = models.DecimalField('Valor Unitário',max_digits=8,decimal_places=2)
     obervacoes = models.TextField('Observações',blank=True)
     
@@ -679,9 +676,10 @@ class TipoCultura(models.Model):
         ('Sc', 'Sc'),
         ('t', 't'),
         ('@', '@'),
+        ('Kg', 'Kg'),
     )
     
-    tipo = models.CharField('Tipo de Cultura',max_length=16)
+    tipo = models.CharField('Tipo de Cultura',max_length=32)
     UnidadeMedida = models.CharField('Unidade de Medida',max_length=8,choices=UNIDADE_MEDIDA_CULTURA)
     
     class Meta:
@@ -841,7 +839,7 @@ class ProdutoComercializacao(models.Model):
 class PoliticaPublica(models.Model):
     
     politicasPublicas = models.ManyToManyField(Beneficiario, through='PoliticaPublica_Beneficiario')
-    politicaPublica = models.CharField('Política Pública',max_length=16)
+    politicaPublica = models.CharField('Política Pública',max_length=32)
     
     class Meta:
         verbose_name = 'Política Pública'
@@ -878,7 +876,7 @@ class PoliticaPublica_Beneficiario(models.Model):
 
 class OrganizacaoSocial(models.Model):
     
-    entidade = models.CharField('Entidade',max_length=16)
+    entidade = models.CharField('Entidade',max_length=32)
     entidades = models.ManyToManyField(Beneficiario, through='OrganizacaoSocial_Beneficiario')
 
     class Meta:

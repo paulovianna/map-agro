@@ -17,6 +17,6 @@ class FormUnidadeProducao(forms.ModelForm):
                   'tituloDominio','participacao','registro','dataRegistro',
                   'receitaFederal','qualidadeAgua','destinoLixo','utilizacaoAgrotoxico',
                   'destinoEmbalagemAgrotoxico','preparoSolo','areaErosao','praticaConservacaoSolo',
-                  'insumosOrganicos','rotacaoCultura','utilizacaoArvores')
+                  'insumosOrganicos','rotacaoCultura','utilizacaoArvores',)
         model = UnidadeProducao
         

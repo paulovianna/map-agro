@@ -308,6 +308,7 @@ class AdminUnidadeProducao(AdminGeo):
                            'utilizacaoArvores')
             }),
         )
+    
     inlines = [ConfrontacaoInline,
                TerraInline,
                BenfeitoriaInline,
