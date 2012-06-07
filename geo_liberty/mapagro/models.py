@@ -703,7 +703,10 @@ class SistemaCultura(models.Model):
      
     class Meta:
         verbose_name = 'Sistema de Cultura'
-        verbose_name_plural = 'Sistemas de Cultura' 
+        verbose_name_plural = 'Sistemas de Cultura'
+    
+    def __unicode__(self):
+        return self.sistema
         
         
 class ProdutoAgricola(Produto):
