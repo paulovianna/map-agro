@@ -10,6 +10,7 @@ class Proprietario(PessoaFisica):
     OPCOES_ESTADO_CIVIL = (
         ('Casado', 'Casado'),
         ('Solteiro', 'Solteiro'),
+        ('Separado', 'Separado'),
     )
     
     municipio = models.ForeignKey(Municipio,default=4321329)
@@ -894,13 +895,14 @@ class OrganizacaoSocial_Beneficiario(models.Model):
     
     FREQUENCIA = (
         ('Anual', 'Anual'),
+        ('Semestral', 'Semestral'),
         ('Mensal', 'Mensal'),
         ('Semanal', 'Semanal'),
     )
     
     organizacaoSocial = models.ForeignKey(OrganizacaoSocial,verbose_name='Organização Social')
     beneficiario = models.ForeignKey(Beneficiario,verbose_name='Beneficiário')
-    frequencia = models.CharField('Frequência',max_length=8,choices=FREQUENCIA)
+    frequencia = models.CharField('Frequência',max_length=16,choices=FREQUENCIA)
     emDia = models.BooleanField('Em dia')
     
     class Meta:
