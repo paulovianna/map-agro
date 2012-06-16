@@ -8,16 +8,17 @@ from geo_liberty.models import PessoaFisica,Ponto,Municipio
 class Proprietario(PessoaFisica):
     
     OPCOES_ESTADO_CIVIL = (
-        ('Casado', 'Casado'),
-        ('Solteiro', 'Solteiro'),
-        ('Separado', 'Separado'),
+        ('Casado', 'Casado(a)'),
+        ('Solteiro', 'Solteiro(a)'),
+        ('Separado', 'Separado(a)'),
+        ('Viuvo', 'Viúvo(a)'),
     )
     
     municipio = models.ForeignKey(Municipio,default=4321329)
     rg = models.CharField('RG',max_length=16)
     telefone = models.CharField('Telefone',max_length=16,blank=True)
     endereco = models.CharField('Endereço',max_length=32)
-    estadoCivil = models.CharField('Estado Civil',max_length=8,choices=OPCOES_ESTADO_CIVIL)
+    estadoCivil = models.CharField('Estado Civil',max_length=16,choices=OPCOES_ESTADO_CIVIL)
     
     class Meta:
         abstract = True 
@@ -62,7 +63,7 @@ class Beneficiario(Proprietario):
         ('Inativo', 'Inativo'),
     )
     
-    dap = models.CharField('Nº DAP',max_length=16)
+    dap = models.CharField('Nº DAP',max_length=20)
     situacao = models.CharField('Situação',max_length=16,choices=SITUACAO)
     classificacao = models.ForeignKey(Classificacao,verbose_name='Classificação')
 
