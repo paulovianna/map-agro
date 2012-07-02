@@ -57,6 +57,7 @@ class FamiliaInline(admin.StackedInline):
 class AdminBeneficiario(admin.ModelAdmin):
     
     readonly_fields = ('municipio',)
+    ordering = ['denominacao']
     fieldsets = (
             (None, {
                 'fields': ('municipio','denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),
@@ -119,6 +120,7 @@ class ProdutoBovinoculturaInline(admin.TabularInline):
     
 class AdminBovinocultura(admin.ModelAdmin):
     inlines = [ProdutoBovinoculturaInline,]
+    ordering = ['beneficiario']
     
 admin.site.register(TipoBovino,AdminTipoBovino)
 admin.site.register(TipoProdutoBovinocultura,AdminTipoProdutoBovinocultura)
@@ -141,6 +143,7 @@ class ProdutoSuinoculturaInline(admin.TabularInline):
     
 class AdminSuinocultura(admin.ModelAdmin):
     inlines = [ProdutoSuinoculturaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoSuino,AdminTipoSuino)
 admin.site.register(TipoProdutoSuinocultura,AdminTipoProdutoSuinocultura)
@@ -163,6 +166,7 @@ class ProdutoOvinocaprinoculturaInline(admin.TabularInline):
     
 class AdminOvinocaprinocultura(admin.ModelAdmin):
     inlines = [ProdutoOvinocaprinoculturaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoOvinoCaprino,AdminTipoOvinoCaprino)
 admin.site.register(TipoProdutoOvinocaprinocultura,AdminTipoProdutoOvinocaprinocultura)
@@ -185,6 +189,7 @@ class ProdutoAviculturaInline(admin.TabularInline):
     
 class AdminAvicultura(admin.ModelAdmin):
     inlines = [ProdutoAviculturaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoAve,AdminTipoAve)
 admin.site.register(TipoProdutoAvicultura,AdminTipoProdutoAvicultura)
@@ -204,6 +209,7 @@ class ProdutoApiculturaInline(admin.TabularInline):
     
 class AdminApicultura(admin.ModelAdmin):
     inlines = [ProdutoApiculturaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoProdutoApicultura,AdminTipoProdutoApicultura)
 admin.site.register(Apicultura,AdminApicultura)
@@ -222,6 +228,7 @@ class ProdutoPsciculturaInline(admin.TabularInline):
     
 class AdminPscicultura(admin.ModelAdmin):
     inlines = [ProdutoPsciculturaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoProdutoPscicultura,AdminTipoProdutoPsicultura)
 admin.site.register(Pscicultura,AdminPscicultura)
@@ -242,6 +249,7 @@ class ProdutoAgricolaInline(admin.TabularInline):
     
 class AdminAgricultura(admin.ModelAdmin):
     inlines = [ProdutoAgricolaInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoCultura,AdminTipoCultura)
 admin.site.register(SistemaCultura,AdminSistemaCultura)
@@ -257,6 +265,7 @@ class ProdutoExtrativismoInline(admin.TabularInline):
 
 class AdminExtrativismo(admin.ModelAdmin):
     inlines = [ProdutoExtrativismoInline,]
+    ordering = ['beneficiario']
 
 admin.site.register(TipoExtrativismo,AdminTipoExtrativismo)
 admin.site.register(Extrativismo,AdminExtrativismo)
@@ -292,6 +301,7 @@ class AdminUnidadeProducao(AdminGeo):
     
     form = FormUnidadeProducao
     list_display = ['beneficiario','denominacao']
+    ordering = ['beneficiario']
     filter_horizontal = ('destinoLixo','utilizacaoAgrotoxico','destinoEmbalagemAgrotoxico',
                         'preparoSolo','praticaConservacaoSolo','insumosOrganicos','utilizacaoArvores',)
     fieldsets = (
@@ -336,6 +346,7 @@ class ProdutoComercializacaoInline(admin.TabularInline):
     
 class AdminComercializacao(admin.ModelAdmin):
     inlines = [ProdutoComercializacaoInline,]
+    ordering = ['beneficiario']
     
 admin.site.register(TipoComercializacao,AdminTipoComercializacao)
 admin.site.register(Comercializacao,AdminComercializacao)
