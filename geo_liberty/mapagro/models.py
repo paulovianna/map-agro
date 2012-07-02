@@ -679,6 +679,7 @@ class TipoCultura(models.Model):
         ('t', 't'),
         ('@', '@'),
         ('Kg', 'Kg'),
+        ('m³', 'm³')
     )
     
     tipo = models.CharField('Tipo de Cultura',max_length=32)
