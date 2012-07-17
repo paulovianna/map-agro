@@ -1,0 +1,107 @@
+<h1>Beneficiário</h1>
+<table>
+		{% for b in beneficiario %}
+		<tr>
+			<td><b>Nome:</b> {{ b.denominacao }}</td>
+			<td><b>Nº da DAP:</b> {{ b.dap }}</td>
+			<td><b>Situação:</b> {{ b.situacao }}</td>
+		</tr>
+		<tr>
+			<td><b>CPF:</b> {{ b.cpf }}</td>
+			<td><b>RG:</b> {{ b.rg }}</td>
+			<td><b>Data de Nascimento:</b> {{ b.dataNascimento }}</td>
+			<td><b>Estado Civil:</b> {{ b.estadoCivil }}</td>
+			<td><b>Sexo:</b> {{ b.sexo }}</td>
+		</tr>
+		<tr>
+			<td><b>Endereco:</b> {{ b.endereco }}</td>
+			<td><b>Município:</b> {{ b.municipio }}</td>
+			<td><b>UF:</b> {{ b.municipio.microRegiao.mesoRegiao.uf }}</td>
+		</tr>
+		<tr>
+			{% if b.telefone != '' %}<td><b>Telefone:</b> {{ b.telefone }}</td>{% endif %}
+			<td><b>Classificação:</b> {{ b.classificacao }}</td>
+		</tr>
+		{% endfor %}
+</table>
+{% if familia %}
+<table>
+	<h2>Composição da Família</h2>
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>Parentesco</th>
+			<th>Idade</th>
+			<th>Data de Nascimento</th>
+			<th>CPF</th>
+			<th>DAP</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for f in familia %}
+		<tr>
+			<td>{{ f.denominacao }}</td>
+			<td>{{ f.parentesco }}</td>
+			<td>{{ f.idade }}</td>
+			<td>{{ f.dataNascimento }}</td>
+			<td>{{ f.cpf }}</td>
+			<td>{{ f.dap }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if politicasPublicas %}
+<table>
+	<h2>Acesso a Políticas Públicas</h2>
+	<thead>
+		<tr>
+			<th>Política Pública</th>
+			<th>Linha</th>
+			<th>Modalidade</th>
+			<th>Valor(R$)</th>
+			<th>Situação</th>
+			<th>Destino</th>
+			<th>Ano de Acesso</th>
+			<th>Entidade</th>
+			<th>Renegociação</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pp in politicasPublicas %}
+		<tr>
+			<td>{{ pp.politicaPublica }}</td>
+			<td>{{ pp.linha }}</td>
+			<td>{{ pp.modalidade }}</td>
+			<td>{{ pp.valor }}</td>
+			<td>{{ pp.situacao }}</td>
+			<td>{{ pp.destino }}</td>
+			<td>{{ pp.anoAcesso }}</td>
+			<td>{{ pp.entidade }}</td>
+			<td>{% if pp.renegociacao %}Sim{% else %}Não{% endif %}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if organizacoesSociais %}
+<table>
+	<h2>Organização Social</h2>
+	<thead>
+		<tr>
+			<th>Entidade/Grupo</th>
+			<th>Frequencia</th>
+			<th>Está em dia</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for os in organizacoesSociais %}
+		<tr>
+			<td>{{ os.organizacaoSocial }}</td>
+			<td>{{ os.frequencia }}</td>
+			<td>{% if os.emDia %}Sim{% else %}Não{% endif %}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}

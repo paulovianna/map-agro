@@ -57,7 +57,6 @@ class FamiliaInline(admin.StackedInline):
 class AdminBeneficiario(admin.ModelAdmin):
     
     readonly_fields = ('municipio',)
-    ordering = ['denominacao']
     fieldsets = (
             (None, {
                 'fields': ('municipio','denominacao',('rg','sexo'),('cpf','dataNascimento','estadoCivil'),

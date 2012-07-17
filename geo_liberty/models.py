@@ -132,7 +132,7 @@ class Pessoa(models.Model):
     denominacao = models.CharField('Denominação',max_length=64)
     
     class Meta:
-        abstract = True 
+        abstract = True
     
     
 class PessoaFisica(Pessoa):

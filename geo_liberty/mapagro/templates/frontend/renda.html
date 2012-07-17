@@ -1,0 +1,280 @@
+<h1>Renda</h1>
+{% if produtosAgricolas %}
+<table>
+	<h2>Agricultura</h2>
+	<thead>
+		<tr>
+			<th>Atividade</th>
+			<th>Sistema de Cultura</th>
+			<th>Área Plantada(ha)</th>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Produção Estimada</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pa in produtosAgricolas %}
+		<tr>
+			<td>{{ pa.tipoCultura }}</td>
+			<td>{{ pa.sistemaCultura }}</td>
+			<td>{{ pa.areaPlantada }}</td>
+			<td>{{ pa.produto }}</td>
+			<td>{{ pa.tipoCultura.UnidadeMedida }}</td>
+			<td>{{ pa.producaoEstimada }}</td>
+			<td>{{ pa.valorUnitario }}</td>
+			<td>{{ pa.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosExtrativistas %}
+<table>
+	<h2>Extrativismo</h2>
+	<thead>
+		<tr>
+			<th>Atividade</th>
+			<th>Área Manejada(ha)</th>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Produção Estimada</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pe in produtosExtrativistas %}
+		<tr>
+			<td>{{ pe.tipoExtrativismo }}</td>
+			<td>{{ pe.areaManejada }}</td>
+			<td>{{ pe.produto }}</td>
+			<td>{{ pe.tipoExtrativismo.UnidadeMedida }}</td>
+			<td>{{ pe.producaoEstimada }}</td>
+			<td>{{ pe.valorUnitario }}</td>
+			<td>{{ pe.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosBovinocultura %}
+<table>
+	<h2>Bovinocultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pb in produtosBovinocultura %}
+		<tr>
+			<td>{{ pb.tipoProdutoBovino }}</td>
+			<td>{{ pb.tipoProdutoBovino.unidadeMedida }}</td>
+			<td>{{ pb.quantidade }}</td>
+			<td>{{ pb.valorUnitario }}</td>
+			<td>{{ pb.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosSuinocultura %}
+<table>
+	<h2>Suinocultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ps in produtosSuinocultura %}
+		<tr>
+			<td>{{ ps.tipoProdutoSuino }}</td>
+			<td>{{ ps.tipoProdutoSuino.unidadeMedida }}</td>
+			<td>{{ ps.quantidade }}</td>
+			<td>{{ ps.valorUnitario }}</td>
+			<td>{{ ps.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosOvinocaprinocultura %}
+<table>
+	<h2>Ovino/Caprinocultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for po in produtosOvinocaprinocultura %}
+		<tr>
+			<td>{{ po.tipoProdutoOvinoCaprino }}</td>
+			<td>{{ po.tipoProdutoOvinoCaprino.unidadeMedida }}</td>
+			<td>{{ po.quantidade }}</td>
+			<td>{{ po.valorUnitario }}</td>
+			<td>{{ po.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosAvicultura %}
+<table>
+	<h2>Avicultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pav in produtosAvicultura %}
+		<tr>
+			<td>{{ pav.tipoProdutoAve }}</td>
+			<td>{{ pav.tipoProdutoAve.unidadeMedida }}</td>
+			<td>{{ pav.quantidade }}</td>
+			<td>{{ pav.valorUnitario }}</td>
+			<td>{{ pav.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosApicultura %}
+<table>
+	<h2>Apicultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pap in produtosApicultura %}
+		<tr>
+			<td>{{ pap.tipoProdutoApicultura }}</td>
+			<td>{{ pap.tipoProdutoApicultura.unidadeMedida }}</td>
+			<td>{{ pap.quantidade }}</td>
+			<td>{{ pap.valorUnitario }}</td>
+			<td>{{ pap.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosPscicultura %}
+<table>
+	<h2>Piscicultura</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Unidade</th>
+			<th>Quantidade</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pps in produtosPscicultura %}
+		<tr>
+			<td>{{ pps.tipoProdutoPsicultura }}</td>
+			<td>{{ pps.tipoProdutoPsicultura.unidadeMedida }}</td>
+			<td>{{ pps.quantidade }}</td>
+			<td>{{ pps.valorUnitario }}</td>
+			<td>{{ pps.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if produtosComercializacao %}
+<table>
+	<h2>Comercialização</h2>
+	<thead>
+		<tr>
+			<th>Produto</th>
+			<th>Quantidade</th>
+			<th>Renda</th>
+			<th>Forma de Comercialização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pc in produtosComercializacao %}
+		<tr>
+			<td>{{ pc.produto }}</td>
+			<td>{{ pc.quantidade }}</td>
+			<td>{{ pc.renda }}</td>
+			<td>{{ pc.forma }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if rendaForaPropriedade %}
+<table>
+	<h2>Renda de Fora da Propriedade</h2>
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>Atividade</th>
+			<th>Valor(R$)</th>
+			<th>Frequência</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for rfp in rendaForaPropriedade %}
+		<tr>
+			<td>{{ rfp.nome }}</td>
+			<td>{{ rfp.atividade }}</td>
+			<td>{{ rfp.valor }}</td>
+			<td>{{ rfp.frequencia }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if rendaForaAgricultura %}
+<table>
+	<h2>Renda de Fora da Agricultura</h2>
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>Atividade</th>
+			<th>Receita(R$)</th>
+			<th>Custo(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for rfa in rendaForaAgricultura %}
+		<tr>
+			<td>{{ rfa.nome }}</td>
+			<td>{{ rfa.atividade }}</td>
+			<td>{{ rfa.receita }}</td>
+			<td>{{ rfa.custo }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}

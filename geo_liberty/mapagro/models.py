@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.urlresolvers import reverse
 from django.contrib.gis.db import models
 from geo_liberty.smart_selects.db_fields import ChainedForeignKey 
 from geo_liberty.models import PessoaFisica,Ponto,Municipio
@@ -70,6 +71,7 @@ class Beneficiario(Proprietario):
     class Meta:
         verbose_name = 'Beneficiário'
         verbose_name_plural = 'Beneficiários'
+        ordering = ['denominacao']
       
 
 class Familia(PessoaFisica):
@@ -81,7 +83,11 @@ class Familia(PessoaFisica):
     class Meta:
         verbose_name = 'Membro da Família'
         verbose_name_plural = 'Membros da Família'
-        
+    
+    def idade(self):
+        from datetime import date
+        return ((date.today() - self.dataNascimento).days) / 365
+    
 
 #Informações Gerais Unidade de Produção
 
@@ -205,6 +211,16 @@ class UnidadeProducao(Propriedade):
     class Meta:
         verbose_name = u'Unidade de Produção Familiar'
         verbose_name_plural = u'Unidades de Produção Familiar'
+        ordering = ['beneficiario__denominacao']
+        
+    def get_absolute_url(self):
+        return 'unidade/%i/' % self.id
+    
+    def get_beneficiario_url(self):
+        return 'beneficiario/%i/' % self.beneficiario.id
+    
+    def get_renda_url(self):
+        return 'renda/%i/%i/' % (self.id, self.beneficiario.id)
     
     
 
@@ -246,6 +262,9 @@ class Terra_UnidadeProducao(models.Model):
         verbose_name = 'Terra de Unidade de Produção'
         verbose_name_plural = 'Terras de Unidade de Produção'
         
+    def valorTotal(self):
+        return self.area * self.valorUnitario
+        
 
 class Benfeitoria(models.Model):
     
@@ -279,6 +298,9 @@ class Benfeitoria_UnidadeProducao(models.Model):
     class Meta:
         verbose_name = 'Benfeitoria de Unidade de Produção'
         verbose_name_plural = 'Benfeitorias de Unidade de Produção'
+        
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
 
 
 class EquipamentoTrabalho(models.Model):
@@ -306,6 +328,9 @@ class EquipamentoTrabalho_UnidadeProducao(models.Model):
     class Meta:
         verbose_name = 'Equipamento de Trabalho de Unidade de Produção'
         verbose_name_plural = 'Equipamentos de Trabalho de Unidade de Produção'
+        
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
 
 
 #Classes Abstratas para Agropecuária,Bovinos,Suinos,Caprinos,Aves
@@ -328,6 +353,9 @@ class AnimalTerrestre(models.Model):
     
     class Meta:
         abstract = True
+        
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
         
 
 class TipoProdutoAnimal(models.Model):
@@ -377,6 +405,9 @@ class ProdutoAnimal(Produto):
             
     class Meta:
         abstract = True
+        
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
          
         
 #Bovinos
@@ -583,6 +614,9 @@ class Abelha(models.Model):
         verbose_name = 'Apicultura'
         verbose_name_plural = 'Apiculturas'
         
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
+        
 
 class TipoProdutoApicultura(TipoProdutoAnimal):
     
@@ -644,6 +678,9 @@ class Peixe(models.Model):
     class Meta:
         verbose_name = 'Pscicultura'
         verbose_name_plural = 'Psciculturas'
+        
+    def valorTotal(self):
+        return self.quantidade * self.valorUnitario
         
         
 class TipoProdutoPscicultura(TipoProdutoAnimal):
@@ -725,6 +762,9 @@ class ProdutoAgricola(Produto):
         verbose_name = 'Produto Agrícola'
         verbose_name_plural = 'Produtos Agrícolas'
         
+    def valorTotal(self):
+        return self.producaoEstimada * self.valorUnitario
+        
 
 #Culturas Extrativistas
 
@@ -763,6 +803,9 @@ class ProdutoExtrativismo(Produto):
     class Meta:
         verbose_name = 'Produto Extrativismo'
         verbose_name_plural = 'Produtos Extrativismo'
+        
+    def valorTotal(self):
+        return self.producaoEstimada * self.valorUnitario
 
 #Rendas de Fora da Propriedade
 

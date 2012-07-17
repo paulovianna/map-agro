@@ -1,0 +1,358 @@
+<h1>Unidade de Produção Familiar</h1>
+<table>
+		{% for u in unidade %}
+		<tr>
+			<td><b>Beneficiário:</b> {{ u.beneficiario }}</td>
+			<td><b>Denominação:</b> {{ u.denominacao }}</td>
+		</tr>
+		<tr>
+			<td><b>Localização:</b> {{ u.localizacao }}</td>
+			<td><b>Município:</b> {{ u.municipio }}</td>
+		</tr>
+		<tr>
+			<td><b>Área:</b> {{ u.area }}</td>
+			{% if u.participacao != None%}<td><b>Participação:</b> {{ u.participacao }}</td>{% endif %}
+		</tr>
+		<tr>
+			{% if u.registro != '' %}<td><b>Registro:</b> {{ u.registro }}</td>{% endif %}
+			{% if u.dataRegistro != None %}<td><b>Data de Registro:</b> {{ u.dataRegistro }}</td>{% endif %}
+			{% if u.tituloDominio != '' %}<td><b>Título de Domínio:</b> {{ u.tituloDominio }}</td>{% endif %}
+			<td><b>Nº Receita Federal:(ITR):</b> {{ u.receitaFederal }}</td>
+		</tr>
+		{% endfor %}
+</table>
+{% if confrontacao %}
+<table>
+		<h2>Confrontações</h2>
+		{% for c in confrontacao %}
+		<tr>
+			<td><b>Norte:</b> {{ c.norte }}</td>
+		</tr>
+		<tr>
+			<td><b>Sul:</b> {{ c.sul }}</td>
+		</tr>
+		<tr>
+			<td><b>Leste:</b> {{ c.leste }}</td>
+		</tr>
+		<tr>
+			<td><b>Oeste:</b> {{ c.oeste }}</td>
+		</tr>
+		<tr>
+			<td><b>Roteiro de Acesso:</b> {{ c.roteiroAcesso }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if terras %}
+<table>
+	<h2>Terras</h2>
+	<thead>
+		<tr>
+			<th>Uso Atual</th>
+			<th>Área(ha)</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for terra in terras %}
+		<tr>
+			<td>{{ terra.terra }}</td>
+			<td>{{ terra.area }}</td>
+			<td>{{ terra.valorUnitario }}</td>
+			<td>{{ terra.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if benfeitorias %}
+<table>
+	<h2>Benfeitorias</h2>
+	<thead>
+		<tr>
+			<th>Discriminação</th>
+			<th>Unidade</th>
+			<th>Qtde</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Observações</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for benfeitoria in benfeitorias %}
+		<tr>
+			<td>{{ benfeitoria.benfeitoria }}</td>
+			<td>{{ benfeitoria.benfeitoria.unidadeMedida }}</td>
+			<td>{{ benfeitoria.quantidade }}</td>
+			<td>{{ benfeitoria.valorUnitario }}</td>
+			<td>{{ benfeitoria.valorTotal }}</td>
+			<td>{{ benfeitoria.obervacoes }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if equipamentos %}
+<table>
+	<h2>Máquinas e Equipamentos de Trabalho</h2>
+	<thead>
+		<tr>
+			<th>Especificação</th>
+			<th>Quantidade</th>
+			<th>Capacidade(Kg)/Potência(Cv)</th>
+			<th>Média de Idade(anos)</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for equipamento in equipamentos %}
+		<tr>
+			<td>{{ equipamento.equipamentoTrabalho }}</td>
+			<td>{{ equipamento.quantidade }}</td>
+			<td>{{ equipamento.capacidadePotencia }}</td>
+			<td>{{ equipamento.mediaIdade }}</td>
+			<td>{{ equipamento.valorUnitario }}</td>
+			<td>{{ equipamento.valorTotal }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+<h2>Semoventes</h2>
+{% if bovinos %}
+<table>
+	<h4>Bovinos</h4>
+	<thead>
+		<tr>
+			<th>Tipo</th>
+			<th>Sistema de Produção</th>
+			<th>Quantidade</th>
+			<th>Idade Média(mês)</th>
+			<th>Raça</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for bovino in bovinos %}
+		<tr>
+			<td>{{ bovino.tipoBovino }}</td>
+			<td>{{ bovino.sistemaProducao }}</td>
+			<td>{{ bovino.quantidade }}</td>
+			<td>{{ bovino.mediaIdade }}</td>
+			<td>{{ bovino.raca }}</td>
+			<td>{{ bovino.valorUnitario }}</td>
+			<td>{{ bovino.valorTotal }}</td>
+			<td>{{ bovino.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if suinos %}
+<table>
+	<h4>Suínos</h4>
+	<thead>
+		<tr>
+			<th>Tipo</th>
+			<th>Sistema de Produção</th>
+			<th>Quantidade</th>
+			<th>Idade Média(mês)</th>
+			<th>Raça</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for suino in suinos %}
+		<tr>
+			<td>{{ suino.tiposuino }}</td>
+			<td>{{ suino.sistemaProducao }}</td>
+			<td>{{ suino.quantidade }}</td>
+			<td>{{ suino.mediaIdade }}</td>
+			<td>{{ suino.raca }}</td>
+			<td>{{ suino.valorUnitario }}</td>
+			<td>{{ suino.valorTotal }}</td>
+			<td>{{ suino.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if ovinos %}
+<table>
+	<h4>Ovinos/Caprinos</h4>
+	<thead>
+		<tr>
+			<th>Tipo</th>
+			<th>Sistema de Produção</th>
+			<th>Quantidade</th>
+			<th>Idade Média(mês)</th>
+			<th>Raça</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ovino in ovinos %}
+		<tr>
+			<td>{{ ovino.tipoOvinoCaprino }}</td>
+			<td>{{ ovino.sistemaProducao }}</td>
+			<td>{{ ovino.quantidade }}</td>
+			<td>{{ ovino.mediaIdade }}</td>
+			<td>{{ ovino.raca }}</td>
+			<td>{{ ovino.valorUnitario }}</td>
+			<td>{{ ovino.valorTotal }}</td>
+			<td>{{ ovino.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if aves %}
+<table>
+	<h4>Aves</h4>
+	<thead>
+		<tr>
+			<th>Tipo</th>
+			<th>Sistema de Produção</th>
+			<th>Quantidade</th>
+			<th>Idade Média(mês)</th>
+			<th>Raça</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ave in aves %}
+		<tr>
+			<td>{{ ave.tipoAve }}</td>
+			<td>{{ ave.sistemaProducao }}</td>
+			<td>{{ ave.quantidade }}</td>
+			<td>{{ ave.mediaIdade }}</td>
+			<td>{{ ave.raca }}</td>
+			<td>{{ ave.valorUnitario }}</td>
+			<td>{{ ave.valorTotal }}</td>
+			<td>{{ ave.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if abelhas %}
+<table>
+	<h4>Apicultura</h4>
+	<thead>
+		<tr>
+			<th>Tipo</th>
+			<th>Quantidade</th>
+			<th>Modelo da Colméia</th>
+			<th>Espécie</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for abelha in abelhas %}
+		<tr>
+			<td>{{ abelha.tipo }}</td>
+			<td>{{ abelha.quantidade }}</td>
+			<td>{{ abelha.modeloColmeia }}</td>
+			<td>{{ abelha.especie }}</td>
+			<td>{{ abelha.valorUnitario }}</td>
+			<td>{{ abelha.valorTotal }}</td>
+			<td>{{ abelha.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if peixes %}
+<table>
+	<h4>Psicultura</h4>
+	<thead>
+		<tr>
+			<th>Unidade</th>
+			<th>Sistema de Produção</th>
+			<th>Quantidade(ha)</th>
+			<th>Espécie</th>
+			<th>Valor Unitário(R$)</th>
+			<th>Valor Total(R$)</th>
+			<th>Localização</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for peixe in peixes %}
+		<tr>
+			<td>{{ peixe.unidade }}</td>
+			<td>{{ peixe.sistemaProducao }}</td>
+			<td>{{ peixe.quantidade }}</td>
+			<td>{{ peixe.especie }}</td>
+			<td>{{ peixe.valorUnitario }}</td>
+			<td>{{ peixe.valorTotal }}</td>
+			<td>{{ peixe.localizacao }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+<h2>Outras Informações</h2>
+{% for u in unidade %}
+{% if u.qualidadeAgua != '' %}<p><b>Qualidade da Água: </b> {{ u.qualidadeAgua }}.</p>{% endif %}
+{% if u.destinoLixo.all %}
+<p><b>Destino do Lixo:</b>
+	<p>Orgânico:
+	{% for dl in u.destinoLixo.all %}
+		{% if dl.tipoLixo = "Organico" %} {{ dl }}; {% endif %}
+	{% endfor %}</p>
+	<p>Inorgânico: 
+	{% for dl in u.destinoLixo.all %}
+		{% if dl.tipoLixo = "Inorganico" %} {{ dl }}; {% endif %}
+	{% endfor %}</p>
+{% endif %}
+{% if u.utilizacaoAgrotoxico.all %}
+<p><b>Utilização de Agrotóxicos: </b> 
+	{% for ua in u.utilizacaoAgrotoxico.all %}
+		{{ ua }};
+	{% endfor %}</p>
+{% endif %}
+{% if u.destinoEmbalagemAgrotoxico.all %}
+<p><b>Destino das Embalagens de Agrotóxicos: </b> 
+	{% for dea in u.destinoEmbalagemAgrotoxico.all %}
+		{{ dea }};
+	{% endfor %}</p>
+{% endif %}
+{% if u.preparoSolo.all %}
+<p><b>Preparo do Solo: </b> 
+	{% for ps in u.preparoSolo.all %}
+		{{ ps }};
+	{% endfor %}</p>
+{% endif %}
+{% if u.praticaConservacaoSolo.all %}
+<p><b>Praticas Conservação do Solo: </b> 
+	{% for pcs in u.praticaConservacaoSolo.all %}
+		{{ pcs }};
+	{% endfor %}</p>
+{% endif %}
+{% if u.insumosOrganicos.all %}
+<p><b>Insumos Orgânicos: </b> 
+	{% for io in u.insumosOrganicos.all %}
+		{{ io }};
+	{% endfor %}</p>
+{% endif %}
+{% if u.utilizacaoArvores.all %}
+<p><b>Utilização de Árvores: </b> 
+	{% for ua in u.utilizacaoArvores.all %}
+		{{ ua }};
+	{% endfor %}</p>
+{% endif %}
+<p><b>Rotação de Cultura: </b> {% if u.rotacaoCultura %}Sim.{% else %}Não.{% endif %}</p>
+{% endfor %}

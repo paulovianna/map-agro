@@ -9,4 +9,5 @@ urlpatterns = patterns('',
      url(r'^admin/', include(admin.site.urls)),
      url(r'^upload/$',upload),
      url(r'^chaining/', include('smart_selects.urls')),
+     url(r'^mapagro/', include('mapagro.urls')),
 )
