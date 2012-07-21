@@ -20,7 +20,7 @@ def MapaUnidadeProducao(request):
         municipio = feat.mpoly
         municipio.transform(ct)
     
-    return render_to_response('frontend/mapa_unidades_producao.html', 
+    return render_to_response('mapa_unidades_producao.html', 
                               RequestContext(request,{'unidades': unidades,
                                                       'municipio':municipio}))
     
@@ -41,7 +41,7 @@ def AbrirUnidadeProducao(request,id_unidade):
     abelhas = Abelha.objects.filter(unidadeProducao=id_unidade)
     peixes = Peixe.objects.filter(unidadeProducao=id_unidade)
     
-    return render_to_response('frontend/unidade_producao.html', 
+    return render_to_response('unidade_producao.html', 
                               RequestContext(request,{'unidade':unidade,
                                                       'confrontacao':confrontacao,
                                                       'terras':terras,
@@ -65,7 +65,7 @@ def AbrirBeneficiario(request,id_beneficiario):
     organizacoesSociais = OrganizacaoSocial_Beneficiario.objects.filter(beneficiario=id_beneficiario)
 
 
-    return render_to_response('frontend/beneficiario.html', 
+    return render_to_response('beneficiario.html', 
                               RequestContext(request,{'beneficiario': beneficiario,
                                                       'familia':familia,
                                                       'politicasPublicas':politicasPublicas,
@@ -147,7 +147,7 @@ def AbrirRenda(request,id_unidade,id_beneficiario):
     
     rendaForaAgricultura = RendaForaAgricultura.objects.filter(beneficiario=id_beneficiario)
 
-    return render_to_response('frontend/renda.html', 
+    return render_to_response('renda.html', 
                               RequestContext(request,{'produtosAgricolas':produtosAgricolas,
                                                       'produtosExtrativistas':produtosExtrativistas,
                                                       'produtosBovinocultura':produtosBovinocultura,
