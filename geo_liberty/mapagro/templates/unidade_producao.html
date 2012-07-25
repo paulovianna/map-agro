@@ -1,51 +1,67 @@
+{% extends "base_mapagro.html" %}
+
+{% block section %}
+UPA
+{% endblock %}
+
+{% block page-header %}
+Relatório Individual
+{% endblock %}
+
+{% block page-header-small %}
+{% for b in beneficiario %}
+{{b.denominacao}}
+{% endfor %}
+{% endblock %}
+
+{% block conteudo %}
+
 <h1>Unidade de Produção Familiar</h1>
-<table>
-		{% for u in unidade %}
-		<tr>
-			<td><b>Beneficiário:</b> {{ u.beneficiario }}</td>
-			<td><b>Denominação:</b> {{ u.denominacao }}</td>
-		</tr>
-		<tr>
-			<td><b>Localização:</b> {{ u.localizacao }}</td>
-			<td><b>Município:</b> {{ u.municipio }}</td>
-		</tr>
-		<tr>
-			<td><b>Área:</b> {{ u.area }}</td>
-			{% if u.participacao != None%}<td><b>Participação:</b> {{ u.participacao }}</td>{% endif %}
-		</tr>
-		<tr>
-			{% if u.registro != '' %}<td><b>Registro:</b> {{ u.registro }}</td>{% endif %}
-			{% if u.dataRegistro != None %}<td><b>Data de Registro:</b> {{ u.dataRegistro }}</td>{% endif %}
-			{% if u.tituloDominio != '' %}<td><b>Título de Domínio:</b> {{ u.tituloDominio }}</td>{% endif %}
-			<td><b>Nº Receita Federal:(ITR):</b> {{ u.receitaFederal }}</td>
-		</tr>
-		{% endfor %}
+<table class="table table-striped table-bordered">
+	{% for u in unidade %}
+	<tr>
+		<th scope="row">Denominação:</th><td colspan="2">{{ u.denominacao }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Localização:</th><td>{{ u.localizacao }}</td>
+		<th scope="row">Município:</th><td>{{ u.municipio }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Área:</th><td>{{ u.area }}</td>
+		{% if u.participacao %}<th scope="row">Participação:</th><td>{{ u.participacao }}</td>{% endif %}
+	</tr>
+	<tr>
+		{% if u.registro %}<td><b>Registro:</b> {{ u.registro }}</td>{% endif %}
+		{% if u.dataRegistro %}<td><b>Data de Registro:</b> {{ u.dataRegistro }}</td>{% endif %}
+		{% if u.tituloDominio %}<td><b>Título de Domínio:</b> {{ u.tituloDominio }}</td>{% endif %} <td><b>Nº Receita Federal:(ITR):</b> {{ u.receitaFederal }}</td>
+	</tr>
+	{% endfor %}
 </table>
 {% if confrontacao %}
-<table>
-		<h2>Confrontações</h2>
-		{% for c in confrontacao %}
-		<tr>
-			<td><b>Norte:</b> {{ c.norte }}</td>
-		</tr>
-		<tr>
-			<td><b>Sul:</b> {{ c.sul }}</td>
-		</tr>
-		<tr>
-			<td><b>Leste:</b> {{ c.leste }}</td>
-		</tr>
-		<tr>
-			<td><b>Oeste:</b> {{ c.oeste }}</td>
-		</tr>
-		<tr>
-			<td><b>Roteiro de Acesso:</b> {{ c.roteiroAcesso }}</td>
-		</tr>
-		{% endfor %}
+<table class="table table-striped table-bordered">
+	<h2>Confrontações</h2>
+	{% for c in confrontacao %}
+	<tr>
+		<th scope="row">Norte</th><td>{{ c.norte }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Sul</th><td>{{ c.sul }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Leste</th><td>{{ c.leste }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Oeste</th><td>{{ c.oeste }}</td>
+	</tr>
+	<tr>
+		<th scope="row">Roteiro de Acesso</th><td>{{ c.roteiroAcesso }}</td>
+	</tr>
+	{% endfor %}
 	</tbody>
 </table>
 {% endif %}
 {% if terras %}
-<table>
+<table class="table table-striped table-bordered">
 	<h2>Terras</h2>
 	<thead>
 		<tr>
@@ -68,7 +84,7 @@
 </table>
 {% endif %}
 {% if benfeitorias %}
-<table>
+<table class="table table-striped table-bordered">
 	<h2>Benfeitorias</h2>
 	<thead>
 		<tr>
@@ -95,7 +111,7 @@
 </table>
 {% endif %}
 {% if equipamentos %}
-<table>
+<table class="table table-striped table-bordered">
 	<h2>Máquinas e Equipamentos de Trabalho</h2>
 	<thead>
 		<tr>
@@ -123,7 +139,7 @@
 {% endif %}
 <h2>Semoventes</h2>
 {% if bovinos %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Bovinos</h4>
 	<thead>
 		<tr>
@@ -154,7 +170,7 @@
 </table>
 {% endif %}
 {% if suinos %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Suínos</h4>
 	<thead>
 		<tr>
@@ -185,7 +201,7 @@
 </table>
 {% endif %}
 {% if ovinos %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Ovinos/Caprinos</h4>
 	<thead>
 		<tr>
@@ -216,7 +232,7 @@
 </table>
 {% endif %}
 {% if aves %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Aves</h4>
 	<thead>
 		<tr>
@@ -247,7 +263,7 @@
 </table>
 {% endif %}
 {% if abelhas %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Apicultura</h4>
 	<thead>
 		<tr>
@@ -276,7 +292,7 @@
 </table>
 {% endif %}
 {% if peixes %}
-<table>
+<table class="table table-bordered table-striped">
 	<h4>Psicultura</h4>
 	<thead>
 		<tr>
@@ -306,53 +322,77 @@
 {% endif %}
 <h2>Outras Informações</h2>
 {% for u in unidade %}
-{% if u.qualidadeAgua != '' %}<p><b>Qualidade da Água: </b> {{ u.qualidadeAgua }}.</p>{% endif %}
+{% if u.qualidadeAgua != '' %}
+<p>
+	<b>Qualidade da Água: </b> {{ u.qualidadeAgua }}.
+</p>{% endif %}
 {% if u.destinoLixo.all %}
-<p><b>Destino do Lixo:</b>
-	<p>Orgânico:
+<p>
+	<b>Destino do Lixo:</b>
+<p>
+	Orgânico:
 	{% for dl in u.destinoLixo.all %}
-		{% if dl.tipoLixo = "Organico" %} {{ dl }}; {% endif %}
-	{% endfor %}</p>
-	<p>Inorgânico: 
+	{% if dl.tipoLixo = "Organico" %} {{ dl }}; {% endif %}
+	{% endfor %}
+</p>
+<p>
+	Inorgânico:
 	{% for dl in u.destinoLixo.all %}
-		{% if dl.tipoLixo = "Inorganico" %} {{ dl }}; {% endif %}
-	{% endfor %}</p>
+	{% if dl.tipoLixo = "Inorganico" %} {{ dl }}; {% endif %}
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.utilizacaoAgrotoxico.all %}
-<p><b>Utilização de Agrotóxicos: </b> 
+<p>
+	<b>Utilização de Agrotóxicos: </b>
 	{% for ua in u.utilizacaoAgrotoxico.all %}
-		{{ ua }};
-	{% endfor %}</p>
+	{{ ua }};
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.destinoEmbalagemAgrotoxico.all %}
-<p><b>Destino das Embalagens de Agrotóxicos: </b> 
+<p>
+	<b>Destino das Embalagens de Agrotóxicos: </b>
 	{% for dea in u.destinoEmbalagemAgrotoxico.all %}
-		{{ dea }};
-	{% endfor %}</p>
+	{{ dea }};
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.preparoSolo.all %}
-<p><b>Preparo do Solo: </b> 
+<p>
+	<b>Preparo do Solo: </b>
 	{% for ps in u.preparoSolo.all %}
-		{{ ps }};
-	{% endfor %}</p>
+	{{ ps }};
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.praticaConservacaoSolo.all %}
-<p><b>Praticas Conservação do Solo: </b> 
+<p>
+	<b>Praticas Conservação do Solo: </b>
 	{% for pcs in u.praticaConservacaoSolo.all %}
-		{{ pcs }};
-	{% endfor %}</p>
+	{{ pcs }};
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.insumosOrganicos.all %}
-<p><b>Insumos Orgânicos: </b> 
+<p>
+	<b>Insumos Orgânicos: </b>
 	{% for io in u.insumosOrganicos.all %}
-		{{ io }};
-	{% endfor %}</p>
+	{{ io }};
+	{% endfor %}
+</p>
 {% endif %}
 {% if u.utilizacaoArvores.all %}
-<p><b>Utilização de Árvores: </b> 
+<p>
+	<b>Utilização de Árvores: </b>
 	{% for ua in u.utilizacaoArvores.all %}
-		{{ ua }};
-	{% endfor %}</p>
+	{{ ua }};
+	{% endfor %}
+</p>
 {% endif %}
-<p><b>Rotação de Cultura: </b> {% if u.rotacaoCultura %}Sim.{% else %}Não.{% endif %}</p>
+<p>
+	<b>Rotação de Cultura: </b> {% if u.rotacaoCultura %}Sim.{% else %}Não.{% endif %}
+</p>
 {% endfor %}
+
+{% endblock %}

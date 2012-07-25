@@ -1,162 +1,177 @@
 {% extends "base_mapagro.html" %}
 
-{% block page-header %}
+{% block section %}
 Relatório Individual
 {% endblock %}
 
+{% block page-header %}
+Relatório Individual
+{% endblock %}
+{% block page-header-small %}
+{% for b in beneficiario %}
+{{b.denominacao}}
+{% endfor %}
+{% endblock %}
+
 {% block conteudo %}
+<div class="row-fluid">
+	<div class="tabbable">
+		<ul class="nav nav-tabs" id="myTab">
+			<li class="active">
+				<a href="#beneficiario" data-toggle="tab">Beneficiário</a>
+			</li>
+			<li>
+				<a href="#familia" data-toggle="tab">Familia</a>
+			</li>
+			<li>
+				<a href="#politicas" data-toggle="tab">Politicas Públicas</a>
+			</li>
+			<li>
+				<a href="#organizacoes" data-toggle="tab">Organizações Sociais</a>
+			</li>
+			<li>
+				<a href="#localizacao" data-toggle="tab">Localização</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="beneficiario">
 
-<div class="tabbable">
-	<ul class="nav nav-tabs" id="myTab">
-		<li class="active">
-			<a href="#beneficiario" data-toggle="tab">Beneficiário</a>
-		</li>
-		<li>
-			<a href="#familia" data-toggle="tab">Familia</a>
-		</li>
-		<li>
-			<a href="#politicas" data-toggle="tab">Politicas Públicas</a>
-		</li>
-		<li>
-			<a href="#organizacoes" data-toggle="tab">Organizações Sociais</a>
-		</li>
-		<li>
-			<a href="#localizacao" data-toggle="tab">Localização</a>
-		</li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active" id="beneficiario">
+				<table class="table table-striped table-bordered">
+					{% for b in beneficiario %}
+					<tr>
+						<th scope="row">Nome</th><td>{{ b.denominacao }}</td>
+						<th scope="row">Número DAP</th><td>{{ b.dap }}</td>
+					</tr>
+					<tr>
+						<th scope="row">Classificação</th><td>{{ b.classificacao }}</td>
+						<th scope="row">Situação</th><td>{{ b.situacao }}</td>
+					</tr>
+					<tr>
+						{% if b.telefone %}
+							<th scope="row">Endereço</th><td>{{ b.endereco }}</td>
+							<th scope="row">Telefone</th><td>{{ b.telefone }}</td>
+						{% else %}
+							<th scope="row">Endereço</th><td colspan="3">{{ b.endereco }}</td>
+						{% endif %}
+					</tr>
+					<tr>
+						<th scope="row">Município</th><td>{{ b.municipio }}</td>
+						<th scope="row">Estado</th><td>{{ b.municipio.microRegiao.mesoRegiao.uf }}</td>
+					</tr>
+					<tr>
+						<th scope="row">Sexo</th><td>{{ b.sexo }}</td>
+						<th scope="row">Estado Civil</th><td>{{ b.estadoCivil }}</td>
+					</tr>
+					<tr>
+						<th scope="row">CPF</th><td>{{ b.cpf }}</td>
+						<th scope="row">RG</th><td>{{ b.rg }}</td>
 
-			<table class="table table-striped table-bordered">
-				{% for b in beneficiario %}
-				<tr>
-					<td><b>Nome:</b> {{ b.denominacao }}</td>
-					<td><b>Nº da DAP:</b> {{ b.dap }}</td>
-					<td><b>Situação:</b> {{ b.situacao }}</td>
-				</tr>
-				<tr>
-					<td><b>CPF:</b> {{ b.cpf }}</td>
-					<td><b>RG:</b> {{ b.rg }}</td>
-					<td><b>Data de Nascimento:</b> {{ b.dataNascimento }}</td>
-					<td><b>Estado Civil:</b> {{ b.estadoCivil }}</td>
-					<td><b>Sexo:</b> {{ b.sexo }}</td>
-				</tr>
-				<tr>
-					<td><b>Endereco:</b> {{ b.endereco }}</td>
-					<td><b>Município:</b> {{ b.municipio }}</td>
-					<td><b>UF:</b> {{ b.municipio.microRegiao.mesoRegiao.uf }}</td>
-				</tr>
-				<tr>
-					{% if b.telefone != '' %}<td><b>Telefone:</b> {{ b.telefone }}</td>{% endif %} <td><b>Classificação:</b> {{ b.classificacao }}</td>
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
-		<div class="tab-pane" id="familia">
-			{% if familia %}
-			<table>
-				<h2>Composição da Família</h2>
-				<thead>
-					<tr>
-						<th>Nome</th>
-						<th>Parentesco</th>
-						<th>Idade</th>
-						<th>Data de Nascimento</th>
-						<th>CPF</th>
-						<th>DAP</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for f in familia %}
-					<tr>
-						<td>{{ f.denominacao }}</td>
-						<td>{{ f.parentesco }}</td>
-						<td>{{ f.idade }}</td>
-						<td>{{ f.dataNascimento }}</td>
-						<td>{{ f.cpf }}</td>
-						<td>{{ f.dap }}</td>
 					</tr>
 					{% endfor %}
-				</tbody>
-			</table>
-			{% else %}
-			<p>
-				Nenhum Registro
-			</p>
-			{% endif %}
-		</div>
-		<div class="tab-pane" id="politicas">
-			{% if politicasPublicas %}
-			<table>
-				<h2>Acesso a Políticas Públicas</h2>
-				<thead>
-					<tr>
-						<th>Política Pública</th>
-						<th>Linha</th>
-						<th>Modalidade</th>
-						<th>Valor(R$)</th>
-						<th>Situação</th>
-						<th>Destino</th>
-						<th>Ano de Acesso</th>
-						<th>Entidade</th>
-						<th>Renegociação</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for pp in politicasPublicas %}
-					<tr>
-						<td>{{ pp.politicaPublica }}</td>
-						<td>{{ pp.linha }}</td>
-						<td>{{ pp.modalidade }}</td>
-						<td>{{ pp.valor }}</td>
-						<td>{{ pp.situacao }}</td>
-						<td>{{ pp.destino }}</td>
-						<td>{{ pp.anoAcesso }}</td>
-						<td>{{ pp.entidade }}</td>
-						<td>{% if pp.renegociacao %}Sim{% else %}Não{% endif %}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			{% else %}
-			<p>
-				Nenhum Registro
-			</p>
-			{% endif %}
-		</div>
-		<div class="tab-pane" id="organizacoes">
-			{% if organizacoesSociais %}
-			<table>
-				<h2>Organização Social</h2>
-				<thead>
-					<tr>
-						<th>Entidade/Grupo</th>
-						<th>Frequencia</th>
-						<th>Está em dia</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for os in organizacoesSociais %}
-					<tr>
-						<td>{{ os.organizacaoSocial }}</td>
-						<td>{{ os.frequencia }}</td>
-						<td>{% if os.emDia %}Sim{% else %}Não{% endif %}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			{% else %}
-			<p>
-				Nenhum Registro
-			</p>
-			{% endif %}
-		</div>
-		<div class="tab-pane" id="localizacao">
-			<p>
-				Open Layers com o Ponto do Beneficiário
-			</p>
+				</table>
+			</div>
+			<div class="tab-pane" id="familia">
+				{% if familia %}
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Parentesco</th>
+							<th>Idade</th>
+							<th>Data de Nascimento</th>
+							<th>CPF</th>
+							<th>DAP</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for f in familia %}
+						<tr>
+							<td>{{ f.denominacao }}</td>
+							<td>{{ f.parentesco }}</td>
+							<td>{{ f.idade }}</td>
+							<td>{{ f.dataNascimento }}</td>
+							<td>{{ f.cpf }}</td>
+							<td>{{ f.dap }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<p>
+					Nenhum Registro
+				</p>
+				{% endif %}
+			</div>
+			<div class="tab-pane" id="politicas">
+				{% if politicasPublicas %}
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Política Pública</th>
+							<th>Linha</th>
+							<th>Modalidade</th>
+							<th>Valor(R$)</th>
+							<th>Situação</th>
+							<th>Destino</th>
+							<th>Ano de Acesso</th>
+							<th>Entidade</th>
+							<th>Renegociação</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for pp in politicasPublicas %}
+						<tr>
+							<td>{{ pp.politicaPublica }}</td>
+							<td>{{ pp.linha }}</td>
+							<td>{{ pp.modalidade }}</td>
+							<td>{{ pp.valor }}</td>
+							<td>{{ pp.situacao }}</td>
+							<td>{{ pp.destino }}</td>
+							<td>{{ pp.anoAcesso }}</td>
+							<td>{{ pp.entidade }}</td>
+							<td>{% if pp.renegociacao %}Sim{% else %}Não{% endif %}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<p>
+					Nenhum Registro
+				</p>
+				{% endif %}
+			</div>
+			<div class="tab-pane" id="organizacoes">
+				{% if organizacoesSociais %}
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Entidade/Grupo</th>
+							<th>Frequencia</th>
+							<th>Está em dia</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for os in organizacoesSociais %}
+						<tr>
+							<td>{{ os.organizacaoSocial }}</td>
+							<td>{{ os.frequencia }}</td>
+							<td>{% if os.emDia %}Sim{% else %}Não{% endif %}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<p>
+					Nenhum Registro
+				</p>
+				{% endif %}
+			</div>
+			<div class="tab-pane" id="localizacao">
+				<p>
+					Open Layers com o Ponto do Beneficiário
+				</p>
+			</div>
 		</div>
 	</div>
 </div>
-
 {% endblock %}
