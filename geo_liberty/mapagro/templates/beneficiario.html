@@ -167,11 +167,88 @@ Relatório Individual
 				{% endif %}
 			</div>
 			<div class="tab-pane" id="localizacao">
-				<p>
-					Open Layers com o Ponto do Beneficiário
-				</p>
+				<div class="row-fluid">
+					<div id="mapa" style="width: 100%; height: 500px;"></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script src="http://maps.google.com/maps/api/js?v=3.6&amp;sensor=false"></script>
+<script type="text/javascript">
+	var map;
+
+	function init() {
+		map = new OpenLayers.Map('mapa');
+		map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+		var gphy = new OpenLayers.Layer.Google("Google Physical", {
+			type : google.maps.MapTypeId.TERRAIN
+		});
+		var gmap = new OpenLayers.Layer.Google("Google Streets", {
+			numZoomLevels : 20
+		});
+		var ghyb = new OpenLayers.Layer.Google("Google Hybrid", {
+			type : google.maps.MapTypeId.HYBRID,
+			numZoomLevels : 20
+		});
+		var gsat = new OpenLayers.Layer.Google("Google Satellite", {
+			type : google.maps.MapTypeId.SATELLITE,
+			numZoomLevels : 22
+		});
+
+		var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+		renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+		var geojson_format = new OpenLayers.Format.GeoJSON();
+		var municipio = new OpenLayers.Layer.Vector("Taquaruçu do Sul");
+		municipio.addFeatures(geojson_format.read('{{ municipio.json|safe }}'));
+
+		var pontos = new OpenLayers.Layer.Vector("Unidade de Produção");
+
+		var labels = new OpenLayers.Layer.Vector("Nome Beneficiário", {
+			styleMap : new OpenLayers.StyleMap({
+				'default' : {
+					strokeColor : "#00FF00",
+					strokeOpacity : 1,
+					strokeWidth : 3,
+					fillColor : "#FF5500",
+					fillOpacity : 0.5,
+					pointRadius : 6,
+					pointerEvents : "visiblePainted",
+					label : "${name}",
+					fontColor : "${favColor}",
+					fontSize : "12px",
+					fontFamily : "Courier New, monospace",
+					fontWeight : "bold",
+					labelAlign : "${align}",
+					labelXOffset : "${xOffset}",
+					labelYOffset : "${yOffset}",
+					labelOutlineColor : "white",
+					labelOutlineWidth : 3
+				}
+			}),
+			renderers : renderer
+		});
+
+		map.addLayers([ghyb, gmap, gphy, gsat, labels, municipio, pontos]);
+		map.setCenter(new OpenLayers.LonLat(-53.151855, -27.508271).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()), 5); '{% for pt in unidade %}'
+		var point = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');
+		var pointFeature = new OpenLayers.Feature.Vector(point);
+		var point2 = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');
+		var pointLabelFeature = new OpenLayers.Feature.Vector(point2);
+		pointLabelFeature.attributes = {
+			name : '{{ pt.beneficiario }}',
+			favColor : 'red',
+			align : "lt"
+		};
+		pontos.addFeatures([pointFeature]);
+		labels.addFeatures([pointLabelFeature]); '{% endfor %}'
+	}
+	
+	$(function() { init(); });
+</script>
 {% endblock %}

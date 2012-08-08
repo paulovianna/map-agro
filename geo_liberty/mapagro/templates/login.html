@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+	MapAgro > {% block section %}Login{% endblock %}
+{% endblock %}
+
+{% block menu-geoliberty %}
+{% endblock %}
+
+
+{% block menu %}
+<form id="login" name="login" method="POST" action="/mapagro/login/">
+	<label>Usuário</label>
+		<input type="text" id="usuario" name="usuario" class="input-medium"/>
+	<label>Senha</label>
+		<input type="password" id="senha" name="senha" class="input-medium"/>
+	{% csrf_token %}
+	<button type="submit" class="btn">Login</button>
+</form>
+{% if mensagem %}
+<div class="alert alert-error">
+	{{ mensagem }}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block page-header %}
+	MapAgro
+{% endblock %}
+{% block page-header-small %}
+	Mapeamento Agrícola
+{% endblock %}

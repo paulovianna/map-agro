@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<h3>{{ nome }}</h3>
+<div class="row-fluid">
+	<p align="justify">Através da realização de estudos e projetos na área de armazenamento e manipulação de dados geográficos, notou-se a complexidade de se trabalhar com dados espaciais. A construção de funções que realizem o tratamento destes tipos de dados se mostra árdua. Para o desenvolvimento de sistemas de informações geográficas são necessárias diversas funções de tratamento de dados geográficos, o que torna o tempo e dificuldade de desenvolvimento de uma aplicação deste tipo muito maior.</p>
+	<p align="justify">Com estas conclusões iniciou-se o planejamento de uma ferramenta para auxílio na construção de SIGs, levando em consideração a dificuldade de implementação e a padronização que os dados geográficos apresentam, definiu-se que o sistema deveria implementar funções que realizassem a manipulação e armazenamento de dados geográficos, o usuário poderia então desenvolver a partir destas funções qualquer tipo de sistema e utilizando as funções já implementadas no trato de dados geográficos.</p>
+	<p align="justify">Para propiciar esta extensão de funcionalidades de um sistema base, foi definido que o paradigma de programação utilizado deveria ser o POO (Programação Orientada a Objetos), já que a mesma permite a construção de objetos que representariam os formatos de dados espaciais e ofereceriam as funções de tratamento relacionadas a cada tipo de dados específico. Utilizando este paradigma também se pode realizar a extensão de classes para a criação de novos objetos que utilizem os atributos e funções da classe mãe. Com isso, as classes que representarão objetos específicos criados pelo usuário do sistema, podem utilizar os atributos e funções do objeto geográfico que representa a informação de forma espacial.</p>
+</div>
+{% endblock %}

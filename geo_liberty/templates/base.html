@@ -27,10 +27,9 @@
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container-fluid">
-						<a href="#" class="brand">{% block brand %}GeoLiberty{% endblock %}</a>
+						<a href="/" class="brand">{% block brand %}GeoLiberty{% endblock %}</a>
 						<p class="navbar-text">
 							{% block brand-text %}
-								Texto de Descrição Lorem Ipsum
 							{% endblock %}
 						</p>
 					</div>
@@ -48,23 +47,32 @@
 								<li class="nav-header">
 									Mapas GeoLiberty
 								</li>
-								<li class="active">
-									<a href="#">Países</a>
+								<!--<li class="active">-->
+									<a href="/paises/">Países</a>
 								</li>
 								<li>
-									<a href="#">Regiões</a>
+									<a href="/regioes/">Regiões</a>
 								</li>
 								<li>
-									<a href="#">Estados</a>
+									<a href="/estados/">Estados</a>
 								</li>
 								<li>
-									<a href="#">Mesorregiões</a>
+									<a href="/mesorregioes/">Mesorregiões</a>
 								</li>
 								<li>
-									<a href="#">Microrregiões</a>
+									<a href="/microrregioes/">Microrregiões</a>
 								</li>
 								<li>
-									<a href="#">Municípios</a>
+									<a href="/municipios/">Municípios</a>
+								</li>
+								<li>
+									<a href="/geopoliticas">Regiões Geopolíticas</a>
+								</li>
+								<li>
+									<br><br>
+								</li>
+								<li>
+									<a href="/admin">Administração</a>
 								</li>
 								{% endblock %}
 								

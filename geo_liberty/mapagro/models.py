@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.core.urlresolvers import reverse
 from django.contrib.gis.db import models
 from geo_liberty.smart_selects.db_fields import ChainedForeignKey 
 from geo_liberty.models import PessoaFisica,Ponto,Municipio
@@ -214,13 +213,13 @@ class UnidadeProducao(Propriedade):
         ordering = ['beneficiario__denominacao']
         
     def get_absolute_url(self):
-        return 'unidade/%i/' % self.id
+        return '/mapagro/unidade/%i/' % self.id
     
     def get_beneficiario_url(self):
-        return 'beneficiario/%i/' % self.beneficiario.id
+        return '/mapagro/beneficiario/%i/' % self.beneficiario.id
     
     def get_renda_url(self):
-        return 'renda/%i/%i/' % (self.id, self.beneficiario.id)
+        return '/mapagro/renda/%i/%i/' % (self.id, self.beneficiario.id)
     
     
 

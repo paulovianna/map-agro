@@ -49,6 +49,12 @@ class Pais(Mpoly):
     def __unicode__(self):
         return self.pais
     
+    def get_absolute_url(self):
+        return 'pais/%i/' % self.id
+    
+    def get_name(self):
+        return self.pais 
+    
     
 class Regiao(Mpoly):
     
@@ -60,6 +66,12 @@ class Regiao(Mpoly):
         verbose_name_plural = 'Regiões'
     
     def __unicode__(self):
+        return self.regiao
+    
+    def get_absolute_url(self):
+        return 'regiao/%i/' % self.id
+    
+    def get_name(self):
         return self.regiao
 
 
@@ -73,6 +85,12 @@ class Uf(Mpoly):
         verbose_name_plural = 'Unidades Federativas'
     
     def __unicode__(self):
+        return self.uf
+    
+    def get_absolute_url(self):
+        return 'estado/%i/' % self.id
+    
+    def get_name(self):
         return self.uf
         
         
@@ -88,6 +106,12 @@ class MesoRegiao(Mpoly):
     def __unicode__(self):
         return self.mesoRegiao
     
+    def get_absolute_url(self):
+        return 'mesorregiao/%i/' % self.id
+    
+    def get_name(self):
+        return self.mesoRegiao
+    
     
 class MicroRegiao(Mpoly):
     
@@ -99,6 +123,12 @@ class MicroRegiao(Mpoly):
         verbose_name_plural = 'Microrregiões'
     
     def __unicode__(self):
+        return self.microRegiao
+    
+    def get_absolute_url(self):
+        return 'microrregiao/%i/' % self.id
+    
+    def get_name(self):
         return self.microRegiao
         
         
@@ -113,6 +143,12 @@ class Municipio(Mpoly):
     
     def __unicode__(self):
         return self.municipio
+    
+    def get_absolute_url(self):
+        return 'municipio/%i/' % self.id
+    
+    def get_name(self):
+        return self.municipio
         
         
 class RegiaoGeoPolitica(models.Model):
@@ -123,6 +159,12 @@ class RegiaoGeoPolitica(models.Model):
     class Meta:
         verbose_name = 'Região Geopolítica'
         verbose_name_plural = 'Regiões GeoPolíticas'
+        
+    def __unicode__(self):
+        return self.regiaoGeoPolitica
+    
+    def get_absolute_url(self):
+        return 'geopolitica/%i/' % self.id
         
 
 # Classes Base para Pessoas    

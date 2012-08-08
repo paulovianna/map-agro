@@ -1,0 +1,24 @@
+{% extends "base_mapagro.html" %}
+
+{% block conteudo %}
+<div class="row-fluid">
+	<table class="table table-striped table-bordered">
+		<thead>
+			<tr>
+				<th>Beneficiário</th>
+				<th>Unidade de Produção Familiar</th>
+				<th>Renda</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for unidade in unidades %}
+			<tr>
+				<td><a href="{{ unidade.get_beneficiario_url }}">{{ unidade.beneficiario }}</a></td>
+				<td><a href="{{ unidade.get_absolute_url }}">{{ unidade.denominacao }}</a></td>
+				<td><a href="{{ unidade.get_renda_url }}">Renda</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

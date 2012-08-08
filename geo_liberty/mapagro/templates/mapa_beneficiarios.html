@@ -3,25 +3,6 @@
 {% block conteudo %}
 <div class="row-fluid">
 	<div id="map" style="width: 100%; height: 500px;"></div>
-	<br>
-	<table class="table table-striped table-bordered">
-		<thead>
-			<tr>
-				<th>Beneficiário</th>
-				<th>Unidade de Produção Familiar</th>
-				<th>Renda</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for unidade in unidades %}
-			<tr>
-				<td><a href="{{ unidade.get_beneficiario_url }}">{{ unidade.beneficiario }}</a></td>
-				<td><a href="{{ unidade.get_absolute_url }}">{{ unidade.denominacao }}</a></td>
-				<td><a href="{{ unidade.get_renda_url }}">Renda</a></td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
 </div>
 {% endblock %}
 
@@ -85,7 +66,7 @@
 		});
 
 		map.addLayers([ghyb, gmap, gphy, gsat, labels, municipio, pontos]);
-		map.setCenter(new OpenLayers.LonLat(-65.2609457966675990, -5.3930664145732550).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()), 3); '{% for pt in unidades %}'
+		map.setCenter(new OpenLayers.LonLat(-53.151855, -27.508271).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()), 5); '{% for pt in unidades %}'
 		var point = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');
 		var pointFeature = new OpenLayers.Feature.Vector(point);
 		var point2 = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');

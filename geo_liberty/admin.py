@@ -37,6 +37,12 @@ class MunicipioAdmin(AdminGeo):
     list_display = ['municipio','microRegiao',]
     list_filter = ['microRegiao__mesoRegiao__uf',mesoRegiaoFilter,microRegiaoFilter]
     
+class RegiaoGeoPoliticaAdmin(AdminGeo):
+    filter_horizontal = ('municipios',)
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "municipios":
+            kwargs["queryset"] = Municipio.objects.filter(microRegiao__mesoRegiao__uf=43)
+        return super(RegiaoGeoPoliticaAdmin, self).formfield_for_manytomany(db_field, request, **kwargs) 
     
 admin.site.register(Pais,PaisAdmin)
 admin.site.register(Regiao,RegiaoAdmin)
@@ -44,4 +50,4 @@ admin.site.register(Uf,UfAdmin)
 admin.site.register(MesoRegiao,MesoRegiaoAdmin)
 admin.site.register(MicroRegiao,MicroRegiaoAdmin)
 admin.site.register(Municipio, MunicipioAdmin)
-admin.site.register(RegiaoGeoPolitica,AdminGeo)
+admin.site.register(RegiaoGeoPolitica,RegiaoGeoPoliticaAdmin)
