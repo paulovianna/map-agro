@@ -168,7 +168,7 @@ Relatório Individual
 			</div>
 			<div class="tab-pane" id="localizacao">
 				<div class="row-fluid">
-					<div id="mapa" style="width: 100%; height: 500px;"></div>
+					<div id="mapa" style="width: 700px; height: 500px;"></div>
 				</div>
 			</div>
 		</div>
@@ -235,7 +235,7 @@ Relatório Individual
 		});
 
 		map.addLayers([ghyb, gmap, gphy, gsat, labels, municipio, pontos]);
-		map.setCenter(new OpenLayers.LonLat(-53.151855, -27.508271).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()), 5); '{% for pt in unidade %}'
+		map.setCenter(new OpenLayers.LonLat(-53.468056, -27.399585).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()), 10); '{% for pt in unidade %}'
 		var point = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');
 		var pointFeature = new OpenLayers.Feature.Vector(point);
 		var point2 = new OpenLayers.Geometry.Point('{{ pt.ponto.x }}', '{{ pt.ponto.y }}');
@@ -249,6 +249,10 @@ Relatório Individual
 		labels.addFeatures([pointLabelFeature]); '{% endfor %}'
 	}
 	
-	$(function() { init(); });
+	$('.nav-tabs li a').click(function() {
+		if($(this).attr('href') == '#localizacao') {
+			init();
+		}
+	});
 </script>
 {% endblock %}
