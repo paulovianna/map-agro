@@ -1,15 +1,8 @@
 *.pyc
 *~
-<<<<<<< HEAD
 geo_liberty/settings.py
-git-notify
-=======
 backup_bd_12_05_2012
 geo_liberty/load.py
 geo_liberty/malha_municipal_2007
 geo_liberty/files
 geo_liberty/files
-
-.pydevproject
-.project
->>>>>>> 5a3fc98dc95151f470e229a2f8b1c1f39e4fea62
